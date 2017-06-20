@@ -24,6 +24,7 @@
 				'calc' => 'Calculadora',
 				'clima' => 'Clima',
 				'webcam' => 'Webcam',
+				'player' => 'Player',
 			)
 		)
 	);
