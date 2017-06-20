@@ -19,11 +19,18 @@ define(
 			Render: function(el_content){
 				var self = this;
 
+				el_content.find('.p-ini-audio').on('click',function(){
+					self.Audio('', 'Audio - Teste');
+				});
+			},
+			Audio: function(urlAudio, modalTitulo){
+				var self = this;
+
 				//https://developer.mozilla.org/pt-BR/docs/Web/HTML/Using_HTML5_audio_and_video
 				//https://github.com/iainhouston/bootstrap3_player olhar e pegar algumas coisas uteis
 
-				// var v = document.getElementsByTagName("video")[0];
-				// v.play();
+				// document.getElementById('player-demo-test').volume+=0.1
+				// document.getElementById('player-demo-test').volume-=0.1
 
 				// var mediaElement = document.getElementById('mediaElementID');
 				// mediaElement.seekable.start();  // Retorna o tempo em que o arquivo começa (em segundos)
@@ -36,6 +43,25 @@ define(
 				// var mediaElement = document.getElementById("myMediaElementID");
 				// mediaElement.pause();
 				// mediaElement.src = "";
+
+
+				App.Modal({
+					title: modalTitulo,
+					url: self.Url('audio'),
+					size_class: 'col-lg-4',
+					callback: function(div){
+						var playerAudio = div.find('#pa-file');
+
+						div.find('#pa-play').on('click', function(){
+							var el = playerAudio.get(0);
+							if (el.paused == false) {
+								el.pause();
+							} else {
+								el.play();
+							}
+						});
+					}
+				});
 			}
 		}
 	}
