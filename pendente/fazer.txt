@@ -1,0 +1,92 @@
+
+#projeto painel
+criar carregando ao abrir páginas
+implementar fases da lua
+relogio simples
+	calendario
+		cadastro de eventos periodicos, datas
+			interface
+				escolher tipo de período:
+					diário
+						escolha de horario	
+					semanal
+						abrir lista dos dias de semana
+					mensal
+					anual
+					pontual
+			exemplos
+				aniversario nao precisa, vai vir da busca de pessoas
+				aniversario namoro, noivado
+				feriados do ano
+				lançamento de material de entretenimento
+					nerdcast toda sexta
+					nerdologia toda quinta
+					nerdplayer toda segunda
+					aulas da cris, cad os dias referente ao semestre
+				agendamento revisao do estoque, trimestral talvez
+				doacao de sangue, trimestral talvez
+	infos interessantes
+		dias normais e uteis do mes: passados, restantes, % do total
+		dias normais e uteis do ano: passados, restantes, % do total
+		horas do dia: passada, restante, % do total
+		horas de sol: passada, restante, % do total
+cadastro pessoas
+	nome, aniversario
+contador de tempo, podendo setar título para ele
+	funcionalidades
+		crescente
+		regressivo
+		alarme sonoro a cada incremento de tempo
+		salvar log de tempo parcial em lista, podendo adicionar texto a cada um
+		interacoes com atalhos em btn teclado
+		play e pause com pico de som, guardando log de andamento // grito "vai!"
+	exemplos de uso
+		tempo sem energi elétrica
+		regressivo para sair de casa
+		cronometrar exercicios, ex: ciclos de 4min
+player compacto
+	exemplo de uso
+		rpg, montando composicao de acontecimentos
+		som ambiente tranquilo composto: chuva, fogueira, vento, raios.
+		dj
+api twiter
+	exemplos de uso
+		painel de noticias
+api telegran
+	exemplos de uso
+		comunicação automatizada do painel com usuário
+		tela de conversa do usuario com outros
+lista de subnome de dominios e suas origens: .ru, .uk...
+faixas de ip e localizacao geografica
+
+
+--------------------------------
+
+*interface web com facilitadores: 
+	criptografia(md5, base_64), 
+	bloco notas, 
+	base conhecimentos(caracteres html, ... segue projeto), 
+	download de progs básicos(putty, winrar)
+	gerador de infos pessoais cpf,rg, nome, data nasc, sexo, altura
+	carregar conteudo para uso offline
+	rentabilidade alcool gasolina
+	km litro carro
+*quebra de senhas de arquivos zip, rar, iso
+*quebra de senhas de arquivos microsoft, word, excel
+
+#base conhecimento
+*funcionabilidades: buscas, cadastro, download em zip, estatisticas de tamanho
+*conteudo:
+links uteis(encurtadores de link, tradutores, piratebay e torrents, buscadores googel bing), 
+combinações cores cabos rede rj45
+cores html basicas
+placas de carro e suas separações territoriais
+unidades matematicas e suas conversões km, polegas, km/h m/s
+formulas matematicas montadas em tela, pitagoras, bascara (a,b,c)
+escalas de tremores e informções
+efeitos nucleares
+lista cidades e infos do ibge
+funções de programação comuns e suas extrutura de funcionamento
+
+
+
