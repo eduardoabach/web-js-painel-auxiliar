@@ -24,13 +24,15 @@ function mk_panel(id){
 function draggable(id){
    var obj = document.getElementById(id);
    obj.style.position = "absolute";
-   var objHead = obj.getElementsByClassName("panel-heading")[0];
 
-   objHead.onmousedown = function(){
-      window.drag_obj = obj;
-      window.drag_obj_x = window.drag_x_pos - obj.offsetLeft;
-      window.drag_obj_y = window.drag_y_pos - obj.offsetTop;
-   }
+   var objsMove = obj.getElementsByClassName("sys-move");
+   Object.keys(objsMove).map(function(objectKey, index) {
+      objsMove[objectKey].onmousedown = function(){
+         window.drag_obj = obj;
+         window.drag_obj_x = window.drag_x_pos - obj.offsetLeft;
+         window.drag_obj_y = window.drag_y_pos - obj.offsetTop;
+      }
+   });
 }
  
 document.onmouseup = function(e){
