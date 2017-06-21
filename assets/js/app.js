@@ -28,8 +28,11 @@ define(
 				var url = url_view('interface','module_panel');
 				$.post(url, {}, function (html_view) {
 					var objPanelJq = el_list.find('#'+objSerial);
-					objPanelJq.hide();
+					//objPanelJq.hide();
 					objPanelJq.html(html_view);
+
+					// ao criar modal ela fica no topo do zindex
+					set_modal_zindex_top(objPanelJq.get(0)); 
 					draggable(objSerial);
 
 					//montando css do panel
@@ -42,27 +45,22 @@ define(
 						objDiv.parentNode.removeChild(objDiv);
 					});
 
+					// antes de post cria carregando
+					var objConteudo = objPanelJq.find('#item-content');
+					objConteudo.html('<div class="loader"></div>');
+
 					// chamada do conteudo da modal requisitado
 					$.ajax({
 						type: "POST",
 						url: options.url,
 						data: dataModal,
+						//dataType: dataType
 						success: function (modal_html) {
-							var el_modal = objPanelJq.find('#item-content');
-							el_modal.html(modal_html);
-							options.callback(el_modal);
+							objConteudo.html(modal_html);
+							options.callback(objConteudo);
 							objPanelJq.show();
 						},
-						//dataType: dataType
 					});
-
-					//old
-					/*$.post(options.url, {}, function (modal_html) {
-						var el_modal = objPanelJq.find('#item-content');
-						el_modal.html(modal_html);
-						options.callback(el_modal);
-						objPanelJq.show();
-					}); */
 				});
 			}
 		}
