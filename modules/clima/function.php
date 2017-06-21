@@ -148,3 +148,69 @@ function get_oms_indice_uv($indiceOms, $tipoRetorno = false){
 		'tempo_exposicao' => $tempoMaxExposicao
 	);
 }
+
+// $dataTest = '2017-06-19';
+// echo fases_lua($dataTest);
+function fases_lua($dataRef=false){
+    if($dataRef == false)
+        $timestamp = time();
+    else
+        $timestamp = strtotime($dataRef);
+    
+    $year = date('Y', $timestamp);
+    $month = date('n', $timestamp);
+    $day = date('j', $timestamp);
+    
+    //modified from http://www.voidware.com/moon_phase.htm
+    $c = $e = $jd = $b = 0;
+
+    if ($month < 3){
+        $year--;
+        $month += 12;
+    }
+
+    ++$month;
+    $c = 365.25 * $year;
+    $e = 30.6 * $month;
+    $jd = $c + $e + $day - 694039.09;	//jd is total days elapsed
+    $jd /= 29.5305882;					//divide by the moon cycle
+    $b = (int) $jd;						//int(jd) -> b, take integer part of jd
+    $jd -= $b;							//subtract integer part to leave fractional part of original jd
+    $b = round($jd * 8);				//scale fraction from 0-8 and round
+
+    if ($b >= 8 ){
+        $b = 0;//0 and 8 are the same so turn 8 into 0
+    }
+
+    switch ($b)	{
+        case 0:
+            return 'Nova'; //New Moon
+            break;
+        case 1:
+            return 'Crescente Côncava';
+            //return 'Emergente'; //Waxing Crescent Moon
+            break;
+        case 2:
+            return 'Crescente'; //Quarter Moon
+            break;
+        case 3:
+            return 'Crescente Convexa'; //Waxing Gibbous Moon
+            break;
+        case 4:
+            return 'Cheia'; //Full Moon
+            break;
+        case 5:
+            return 'Minguante Convexa'; //Waning Gibbous Moon
+            //return 'Disseminadora'; //Waning Gibbous Moon
+            break;
+        case 6:
+            return 'Minguante'; //Last Quarter Moon
+            break;
+        case 7:
+            return 'Minguante Côncava'; //Waning Crescent Moon
+            //return 'Balsâmica'; //Waning Crescent Moon
+            break;
+        default:
+            return 'Erro'; //Error
+    }
+}

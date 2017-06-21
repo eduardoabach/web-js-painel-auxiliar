@@ -21,16 +21,46 @@ function mk_panel(id){
    return false;
 }
 
-function draggable(id){
+// objeto recebido deve ser $
+function set_modal_zindex_top(elModal){
+   $(elModal).css('z-index', get_modal_max_zindex()+1);
+}
+
+function get_modal_max_zindex(){
+   var objsModel = document.getElementsByClassName("app-painel");
+   return get_max_zindex(objsModel);
+}
+
+function get_max_zindex(elementsList){
+   var zIndexMax = 0;
+   for(var i = 0; i < elementsList.length; i++){
+      var zindex=document.defaultView.getComputedStyle(elementsList[i],null).getPropertyValue("z-index");
+      if ((zindex > zIndexMax) && (zindex != 'auto')){
+         zIndexMax = zindex;
+      }
+   }
+   return Number(zIndexMax);
+}
+
+function draggable(id, desativ){
    var obj = document.getElementById(id);
    obj.style.position = "absolute";
-   var objHead = obj.getElementsByClassName("panel-heading")[0];
 
-   objHead.onmousedown = function(){
-      window.drag_obj = obj;
-      window.drag_obj_x = window.drag_x_pos - obj.offsetLeft;
-      window.drag_obj_y = window.drag_y_pos - obj.offsetTop;
-   }
+   var objsMove = obj.getElementsByClassName("sys-move");
+   Object.keys(objsMove).map(function(objectKey, index) {
+      if(desativ === true){
+         objsMove[objectKey].onmousedown = null;
+      } else {
+         objsMove[objectKey].onmousedown = function(){
+            // subir modal para o topo ao selecionar
+            set_modal_zindex_top(obj);
+
+            window.drag_obj = obj;
+            window.drag_obj_x = window.drag_x_pos - obj.offsetLeft;
+            window.drag_obj_y = window.drag_y_pos - obj.offsetTop;
+         }
+      }
+   });
 }
  
 document.onmouseup = function(e){

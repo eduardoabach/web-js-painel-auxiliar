@@ -1,0 +1,223 @@
+
+#projeto painel prioridades
+btn travar posição modal
+config cor modal
+btn modal atualizar conteudo, reload mesmo
+	possibilidade de reload periodico da janela, 10s, 30s, 10min...
+implementar fases da lua
+modo de telas configurável
+	janelas arrastáveis
+	fixo na tela (mobile responsível)
+relogio / calendario
+	calendario
+		cadastro de eventos periodicos, datas
+			interface
+				escolher tipo de período:
+					diário
+						escolha de horario	
+					semanal
+						abrir lista dos dias de semana
+					mensal
+					anual
+					pontual
+			exemplos
+				aniversario nao precisa, vai vir da busca de pessoas
+				aniversario namoro, noivado
+				feriados do ano
+				lançamento de material de entretenimento
+					nerdcast toda sexta
+					nerdologia toda quinta
+					nerdplayer toda segunda
+					aulas da cris, cad os dias referente ao semestre
+				agendamento revisao do estoque, trimestral talvez
+				doacao de sangue, trimestral talvez
+	infos interessantes
+		dias normais e uteis do mes: passados, restantes, % do total
+		dias normais e uteis do ano: passados, restantes, % do total
+		horas do dia: passada, restante, % do total
+		horas de sol: passada, restante, % do total
+cadastro pessoas
+	nome, aniversario
+contador de tempo, podendo setar título para ele
+	funcionalidades
+		crescente
+		regressivo
+		alarme sonoro a cada incremento de tempo
+		salvar log de tempo parcial em lista, podendo adicionar texto a cada um
+		interacoes com atalhos em btn teclado
+		play e pause com pico de som, guardando log de andamento // grito "vai!"
+	exemplos de uso
+		tempo sem energi elétrica
+		regressivo para sair de casa
+		cronometrar exercicios, ex: ciclos de 4min
+player compacto
+	tela mestre para todos
+		alterar todos os volumes
+			opt gradual
+		pausar todos
+			opt gradual
+		fechar todos
+	funcionamento unitario
+		alterar volume
+			opt gradual
+		pausar
+			opt gradual
+	exemplo de uso
+		rpg, montando composicao de acontecimentos
+		som ambiente tranquilo composto: chuva, fogueira, vento, raios.
+		dj
+cadastro de crises
+	posterio uso em painel gerencial
+	dara início
+	categoria
+	sub cad por data e hora para eventos desta crise, subcad com categorias para eventos
+administração de fluxo de caixa
+	datas das contas
+	saldo
+estoque de mantimentos
+	agua
+	comida
+	energia elétrica
+	gas de cozinha
+	lenha
+	produtos de limpeza e higieni
+		papel higienico
+		pasta de dente
+		lavadas de roupa possíveis
+		sabonetes
+		detergente
+		água sanitária
+	combustível
+		alcool
+		gasolina
+		diesel
+api twiter
+	exemplos de uso
+		painel de noticias
+api telegran
+	exemplos de uso
+		comunicação automatizada do painel com usuário
+		tela de conversa do usuario com outros
+lista de subnome de dominios e suas origens: .ru, .uk...
+faixas de ip e localizacao geografica
+
+
+------------------------------------------------------------------------------------
+
+
+/*
+Pesquisar e implementar
+
+https://s2id.mi.gov.br/# //muito interessante
+https://s2id.mi.gov.br/paginas/series/
+https://s2id.mi.gov.br/paginas/relatorios/
+https://s2id.mi.gov.br/paginas/atlas/
+https://s2id-search.labtrans.ufsc.br/
+http://www.integracao.gov.br/documents/3958478/0/Manual_do_usuario_acesso.pdf/4aa6b1da-b1b5-46bb-a65e-1d5aa71c246e
+http://www.integracao.gov.br/documents/3958478/0/Reconhecimento_manual_do_usuario_municipal.pdf/a9bfd760-d99f-4205-96ca-ab4063dd1a3d
+http://www.integracao.gov.br/documents/3958478/0/Reconhecimento_manual_do_usuario_estadual.pdf/9b17367c-83d3-43d9-bfdf-34ed38bd3278
+http://www.integracao.gov.br/documents/3958478/0/Reconstru%C3%A7%C3%A3o_manual_do_usuario_municipal_estadual.pdf/6c341fd1-f7b2-42f9-90ae-fa71526b5908
+http://www.integracao.gov.br/documents/3958478/0/Resposta_manual_do_usuario_estadual.pdf/37803e2a-f093-466d-8901-edfeb06ad84a
+http://www.integracao.gov.br/documents/3958478/0/Resposta_manual_do_usuario_municipal.pdf/bef61c0d-92bc-4add-b53b-3096fd236b42
+
+http://infoclima.cptec.inpe.br/
+http://www2.portoalegre.rs.gov.br/ceic/default.php?p_secao=25 //lista lincada de sistemas integrados
+http://www2.portoalegre.rs.gov.br/ceic/default.php?p_secao=53
+http://www2.portoalegre.rs.gov.br/ceic/default.php?p_secao=52
+http://www2.portoalegre.rs.gov.br/ceic/default.php?p_secao=28
+http://www2.portoalegre.rs.gov.br/codec/default.php?p_secao=80
+http://www2.portoalegre.rs.gov.br/codec/default.php?p_secao=73
+http://www.inmet.gov.br/portal/index.php?r=home2/index
+http://www.inmet.gov.br/portal/index.php?r=tempo2/verProximosDias&code=4314902
+http://www.inmet.gov.br/satelites/?area=0&produto=G12_AS_TN
+http://www.inmet.gov.br/portal/index.php?r=estacoes/estacoesAutomaticas
+http://www.inmet.gov.br/sonabra/pg_iframe.php?codEst=A884&mesAno=2017
+http://www.defesacivil.rs.gov.br/inicial
+http://www.inpe.br/
+
+http://www.integracao.gov.br/sedec/quem-e-quem
+
+https://en.wikipedia.org/wiki/Web_Map_Service
+http://eumetview.eumetsat.int/mapviewer/
+http://eumetview.eumetsat.int/geoserver/wms?service=wms&version=1.3.0&request=GetCapabilities
+http://www.eumetsat.int/website/home/Images/RealTimeImages/index.html
+
+https://esic.cgu.gov.br/sistema/site/index.html?ReturnUrl=%2fsistema%2f
+
+http://www.acessoainformacao.gov.br/lai-para-sic/sic-apoio-orientacoes/lista-de-sics
+
+*/
+
+------------------------------------------------------------------------------------
+
+
+#ideia de painel geral de crise, super resumido
+geral
+	painel com tempo passando
+		relogio
+			hora atual em destaque
+				hora em paises complementares configurados em tamanho menor
+				ciclo do sol: hora nascente, poente
+			tempo referencial passado e restante, % e números, dia, tempo de luz solar
+		data
+			data atual em destaque
+			em detalhe discreto, fase da lua
+			data referencial passado e restante, % e números, semana, mes, ano
+			lista de eventos importantes cadastrados e tempo em dias até eles
+				pronunciamentos
+				eclipses
+				julgamentos políticos
+				protestos e greves marcadas
+	crises cadastradas
+		contador de tempo passado em cada uma
+sociedade, mundo externo
+	financeiro (%de mudança dia, semana, mes)
+		moedas, dinheiro
+			dolar
+			euro
+			btc e ligthcoin
+		ações, mercado (%de mudança dia, semana, mes)
+			indice bovespa
+			NASDAQ / NYSE
+	clima, natureza
+		cidades configuradas
+interno
+	financeiro
+		fluxo de caixa até o fim do mes, proximas duas semanas min
+		saldo de uso atual
+		reservas financeiras totais
+	estoque de mantimentos
+		avaliação conforme metas
+		resumo em dias por categorias para quantidade de pessoas configurada
+
+
+--------------------------------------------------------------------------------------
+
+*interface web com facilitadores: 
+	criptografia(md5, base_64), 
+	bloco notas, 
+	base conhecimentos(caracteres html, ... segue projeto), 
+	download de progs básicos(putty, winrar)
+	gerador de infos pessoais cpf,rg, nome, data nasc, sexo, altura
+	carregar conteudo para uso offline
+	rentabilidade alcool gasolina
+	km litro carro
+*quebra de senhas de arquivos zip, rar, iso
+*quebra de senhas de arquivos microsoft, word, excel
+
+#base conhecimento
+*funcionabilidades: buscas, cadastro, download em zip, estatisticas de tamanho
+*conteudo:
+links uteis(encurtadores de link, tradutores, piratebay e torrents, buscadores googel bing), 
+combinações cores cabos rede rj45
+cores html basicas
+placas de carro e suas separações territoriais
+unidades matematicas e suas conversões km, polegas, km/h m/s
+formulas matematicas montadas em tela, pitagoras, bascara (a,b,c)
+escalas de tremores e informções
+efeitos nucleares
+lista cidades e infos do ibge
+funções de programação comuns e suas extrutura de funcionamento
+
+
+
