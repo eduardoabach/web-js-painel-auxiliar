@@ -21,19 +21,20 @@ define(
 
 				el_content.find('.f-opt').click(function(){
 					var s_option = $(this).data('option');
-					if(s_option == 'juros'){
-						self.Juros();
-					}
+					self.PainelFinan(s_option);
 				});
 			},
-			Juros: function(){
+			PainelFinan: function(comand, titulo){
 				var self = this;
+
+				if(titulo == undefined)
+					titulo = 'Painel Financeiro';
+
 				App.Modal({
-					title: 'Finan Juros',
-					url: self.Url('juros'),
+					title: titulo,
+					url: self.Url(comand),
 					size_class: 'col-lg-4',
 					callback: function(div){
-						self.Render(div);
 					}
 				});
 			}

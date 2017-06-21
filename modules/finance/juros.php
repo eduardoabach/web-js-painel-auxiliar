@@ -1,6 +1,6 @@
 <?php
 ini_set("soap.wsdl_cache_enabled", "0"); // vamos evitar que o arquivo WSDL seja colocado no cache
-$WsSOAP = new SoapClient("./FachadaWSSGS.wsdl");
+$WsSOAP = new SoapClient("./web-service/bcb_FachadaWSSGS.wsdl");
 $ParametroPesquisa = "getUltimoValorXML";
 
 $moedList = array(
