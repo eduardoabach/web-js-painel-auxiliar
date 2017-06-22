@@ -173,6 +173,17 @@ api telegran
 		tela de conversa do usuario com outros
 lista de subnome de dominios e suas origens: .ru, .uk...
 faixas de ip e localizacao geografica
+banco de dados
+	pdo
+	todas tables com interferencia de usuário com chave primária dupla
+		key e local: assim pode cadastrar offline e nao ter conflito de key increment
+	rotina de sincronia com outras bases
+		user informa dados de acesso
+			btn teste
+			btn sinc total (receber e mandar)
+				ou fazer parcial uma das duas operações
+			como funciona: select nas tables com inner join do id com subtable (select values) dos ids existentes
+
 
 
 ------------------------------------------------------------------------------------
