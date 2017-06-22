@@ -13,7 +13,8 @@
 			'menu'=> array(
 				'search' => 'Busca',
 				'finance' => 'Financeiro',
-				'links' => 'Links'
+				'links' => 'Links',
+				'history' => 'História'
 			)
 		),
 		'ferramentas' => array(

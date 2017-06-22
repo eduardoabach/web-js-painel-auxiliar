@@ -1,15 +1,46 @@
 
+
+//A seguir, uma tabela com os valores das variações da aceleração da gravidade terrestre com a altitude :
+altitude km; gravidade(m/s)
+0;9,81
+1000;7,33
+2000;5,68
+3000;4,53
+4000;3,7
+10000;1,49
+
+
 #projeto painel prioridades
 btn travar posição modal
 config cor modal
 btn modal atualizar conteudo, reload mesmo
 	possibilidade de reload periodico da janela, 10s, 30s, 10min...
-implementar fases da lua
+implementar fases da lua // http://star-www.st-and.ac.uk/~fv/webnotes/chapt13.htm | http://www.zenite.nu/lua-cheia/
+	horario de aparecer e sair, trajetória, angulo(talvez por pontos cardeais, n,s,l,o)
+		baseado na sua posição geográfica
+	luminosidade dela, baseada na área exporta a luz solar, 0~100%
+	calcular escuridao da noite
+		luminosidade da lua / posição de movimentação dela
+		destacar momento mais escuro e mais claro
 modo de telas configurável
 	janelas arrastáveis
 	fixo na tela (mobile responsível)
 relogio / calendario
 	calendario
+		estações e seu andamento no calendário
+		mostrar alimentos por épocas do ano, opt de colheita e plantio
+		solstício, 2x ao ano dez e jun, sol no limite da inclinacao
+		equinócio, 2x ao ano mar e set, sol alinhado ao equador
+		mostrar angulação do sol em relação a terra
+		calc da distancia do sol em referencia a data
+			mostrar min, max e atual
+			Periélio, ponto da órbita mais próximo do sol
+				Distância Terra e Sol no periélio é ~147,1 milhões de quilômetros. ~14 dias após solstício(dez), ~4 jan.
+				Maior velocidade de translação
+			Afélio, ponto da órbita mais afastado do sol
+				Distância Terra e o Sol no afélio é ~152,1 milhões de quilômetros. ~14 dias após solstício(jun), ~4 jul.
+				Menor velocidade de translação
+		calc distancia da lua(?)
 		cadastro de eventos periodicos, datas
 			interface
 				escolher tipo de período:
@@ -36,6 +67,48 @@ relogio / calendario
 		dias normais e uteis do ano: passados, restantes, % do total
 		horas do dia: passada, restante, % do total
 		horas de sol: passada, restante, % do total
+		estimativas (por padrao desativado, btn ativa...)
+			nascimento no mundo no dia
+			mortes
+			acidentes de carro
+	estatisticas relevantes por dia ou ano // http://worldpopulationhistory.org/map/1/mercator/1/0/25/
+		nacimentos
+			segmentação geográfica
+			https://en.wikipedia.org/wiki/Birth_rate
+		mortes
+			segmentação geográfica
+			segmentações de motivos
+			https://en.wikipedia.org/wiki/Mortality_rate
+		acimentes de carro
+		clima
+			média histórica mm chuva, regiao, cidade
+			média histórica temperatura, regiao, cidade
+	get info de uma data
+		fase lunar
+		duracao do dia solar e suas infos
+		dia da semana
+		se o ano é bisexto
+		tempo passado até agora desta data, positivo ou negativo (futuro, passado)
+	posicao solar
+		faixa de tempo
+			hora nascer
+			faixa crepusculo
+				civil, 6° abaixo da linha do horizonte, 25min, limite onde não precisa de iluminacao pública
+				náutico, 12°, 50min, limite onde se pode ver estrelas de navegação
+				astronômico, 18°, 1h15min, limite onde o sol não mais interfere na observação do céu
+			faida solar intensa ini (meio dia -3h)
+			meio dia solar
+			faida solar intensa fim (meio dia +3h)
+			faixa crepusculo
+			hora fim
+		resumo
+			Duração do dia: 15 h 7 min 43 s 
+			Duração da noite: dia-24h
+			faixa de dia e noite nas 24h, % dentro da faixa
+		https://secure.php.net/manual/pt_BR/function.date-sun-info.php
+		https://secure.php.net/manual/pt_BR/function.date-sunset.php
+
+
 cadastro pessoas
 	nome, aniversario
 contador de tempo, podendo setar título para ele
@@ -101,6 +174,30 @@ api telegran
 lista de subnome de dominios e suas origens: .ru, .uk...
 faixas de ip e localizacao geografica
 
+
+------------------------------------------------------------------------------------
+
+
+<?
+//https://secure.php.net/manual/pt_BR/function.date-sunrise.php
+//https://secure.php.net/manual/pt_BR/function.date-sunset.php
+//https://secure.php.net/manual/pt_BR/function.date-sun-info.php
+//http://dateandtime.info/pt/citysunrisesunset.php?id=745044
+
+/* calculate the sunrise time for Lisbon, Portugal
+Latitude: 38.4 North
+Longitude: 9 West
+Zenith ~= 90 // $zenith=90+50/60;
+offset: +1 GMT
+*/
+
+echo date("D M d Y"). ', sunrise time : ' .date_sunrise(time(), SUNFUNCS_RET_STRING, 38.4, -9, 90, 1).'<br>';
+echo date("D M d Y"). ', sunrise time : ' .date_sunset(time(), SUNFUNCS_RET_STRING, 38.4, -9, 90, 1).'<br>';
+
+$time = new DateTime('now', new DateTimeZone('America/Los_Angeles'));
+echo date("D M d Y"). ', Los angeles: sunrise time : ' .date_sunrise( $time->getTimestamp(), SUNFUNCS_RET_STRING, 38.4, -9, 90, $time->getOffset() / 3600);
+
+?>
 
 ------------------------------------------------------------------------------------
 
