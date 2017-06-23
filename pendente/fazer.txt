@@ -13,6 +13,17 @@ altitude km; gravidade(m/s)
 #projeto painel prioridades
 btn travar posição modal
 config cor modal
+clima
+	adicionar outros 7 dias, totalizando 14
+	movimento do sol
+	fazes da lua / movimento da lua
+		iluminação da noite
+modo de telas configurável
+	janelas arrastáveis
+	fixo na tela (mobile responsível)
+modo de menu configurável
+	padrão atual (para pc)
+	alguma opção para funcionar em mobile
 btn modal atualizar conteudo, reload mesmo
 	possibilidade de reload periodico da janela, 10s, 30s, 10min...
 implementar fases da lua // http://star-www.st-and.ac.uk/~fv/webnotes/chapt13.htm | http://www.zenite.nu/lua-cheia/
@@ -22,9 +33,6 @@ implementar fases da lua // http://star-www.st-and.ac.uk/~fv/webnotes/chapt13.ht
 	calcular escuridao da noite
 		luminosidade da lua / posição de movimentação dela
 		destacar momento mais escuro e mais claro
-modo de telas configurável
-	janelas arrastáveis
-	fixo na tela (mobile responsível)
 relogio / calendario
 	calendario
 		estações e seu andamento no calendário
@@ -62,6 +70,13 @@ relogio / calendario
 					aulas da cris, cad os dias referente ao semestre
 				agendamento revisao do estoque, trimestral talvez
 				doacao de sangue, trimestral talvez
+				financeiros
+					black friday
+					promocões da steam tradicionais, dia das bruxas e verão norte americano(jun)
+				datas comemorativas
+					natal
+					pascoa
+					dia dos namorados
 	infos interessantes
 		dias normais e uteis do mes: passados, restantes, % do total
 		dias normais e uteis do ano: passados, restantes, % do total
@@ -108,7 +123,24 @@ relogio / calendario
 		https://secure.php.net/manual/pt_BR/function.date-sun-info.php
 		https://secure.php.net/manual/pt_BR/function.date-sunset.php
 
-
+interface de comparação de itens
+	criar requisitos que recebem notas
+		requisitos podem ter pesos diferentes
+	itens recebem requisitos e suas notas
+	calc automático de nota média de requisitos considerando pesos
+administração de veiculo
+	log de preços e locais de abastecimento
+	log de manutenções
+	orientacao para tempo de manutenção das peças do carro, normalmente em KM 
+		filtro ar
+		filtro combustive
+		pastilha freio
+		pneu
+implemetar api de voz do goole
+	funcionalidade de resumo padrão de situação para o dia
+		previsao do tempo
+		datas próximas
+		valores de moedas
 cadastro pessoas
 	nome, aniversario
 contador de tempo, podendo setar título para ele
