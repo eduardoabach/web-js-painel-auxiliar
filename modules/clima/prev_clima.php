@@ -62,7 +62,7 @@ $xmlOb = new SimpleXMLElement($page);
 								<small><?=$infoUv['risco']?></small>
 							</td>
 							<td align="center">
-								<img width="55" height="37" src='modules/clima/img/<?=trim($diaPrev->tempo)?>.png'>
+								<img width="55" height="37" src='<?=get_inpe_img_clima_sigla(trim($diaPrev->tempo))?>'>
 							</td>
 						</tr>
 						<?php
