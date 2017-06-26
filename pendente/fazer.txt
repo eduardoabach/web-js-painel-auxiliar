@@ -14,10 +14,12 @@ altitude km; gravidade(m/s)
 btn travar posição modal
 config cor modal
 clima
-	adicionar outros 7 dias, totalizando 14
-	movimento do sol
-	fazes da lua / movimento da lua
-		iluminação da noite
+	etapas para ampliar detalhes
+		uv
+		adicionar outros 7 dias, totalizando 14
+		movimento do sol
+		fazes da lua / movimento da lua
+			iluminação da noite
 modo de telas configurável
 	janelas arrastáveis
 	fixo na tela (mobile responsível)
