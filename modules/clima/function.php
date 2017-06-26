@@ -48,7 +48,11 @@ function get_inpe_cond_tempo($sigla){
 }
 
 function get_inpe_img_clima_sigla($sigla){
-	return 'modules/clima/img/'.$sigla.'.png';
+	return 'modules/clima/img/inpe/'.$sigla.'.png';
+}
+
+function get_img_fase_lua($fase){
+	return 'modules/clima/img/lua_fase/'.$fase.'.png';
 }
 
 // Escala de tons de pele por fitzpatrick.
@@ -175,7 +179,7 @@ function get_cor_temperatura($temp){
 
 // $dataTest = '2017-06-19';
 // echo fases_lua($dataTest);
-function fases_lua($dataRef=false){
+function fases_lua($dataRef=false, $returnNome=false){
     if($dataRef == false)
         $timestamp = time();
     else
@@ -200,8 +204,11 @@ function fases_lua($dataRef=false){
     $jd /= 29.5305882;					//divide by the moon cycle
     $b = (int) $jd;						//int(jd) -> b, take integer part of jd
     $jd -= $b;							//subtract integer part to leave fractional part of original jd
-    $b = round($jd * 8);				//scale fraction from 0-8 and round
 
+    if($returnNome === false)
+    	return $jd;
+
+    $b = round($jd * 8);				//scale fraction from 0-8 and round
     if ($b >= 8 ){
         $b = 0;//0 and 8 are the same so turn 8 into 0
     }
