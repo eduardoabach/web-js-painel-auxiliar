@@ -112,29 +112,29 @@ function get_oms_indice_uv($indiceOms, $tipoRetorno = false){
 	// Para os baixos = 1, 2
 	$risco = 'BAIXO';
 	$medidas = 'Não são necessárias medidas adicionais.';
-	$cor = 'verde';
+	$cor = '#32CD32'; //verde
 	$tempoMaxExposicao = 60; // ou até mais, aqui está em minutos
 
 	// 3, 4, 5
 	if($indiceOms >= 3 && $indiceOms <= 5){
 		$risco = 'MODERADO';
 		$medidas = 'Protetor solar e óculos de sol. Procurar sombra durante as 10h e as 16h.';
-		$cor = 'amarelo';
+		$cor = '#CCAA00'; //amarelo
 		$tempoMaxExposicao = 45;
 	} else if($indiceOms >= 6 && $indiceOms <= 7){
 		$risco = 'ALTO';
 		$medidas = 'Protetor solar, óculos de sol com filtro UV e chapéu. Procurar sombra durante as 10h e as 16h.';
-		$cor = 'laranja';
+		$cor = '#FF7F00'; //laranja
 		$tempoMaxExposicao = 30;
 	} else if($indiceOms >= 8 && $indiceOms <= 10){
 		$risco = 'MUITO ALTO';
 		$medidas = 'Protetor solar, óculos de sol com filtro UV, chapéu e guarda-sol. Evite a exposição solar entre as 10h e as 16h. As crianças devem evitar a exposição solar durante todo o dia.';
-		$cor = 'vermelho';
+		$cor = '#B22222'; //vermelho
 		$tempoMaxExposicao = 25;
 	} else if($indiceOms >= 11){ // Pode ir até 14
 		$risco = 'EXTREMO';
 		$medidas = 'Evitar a exposição solar.';
-		$cor = 'roxo';
+		$cor = '#9400D3'; //roxo
 		$tempoMaxExposicao = 10;
 	}
 
@@ -151,6 +151,26 @@ function get_oms_indice_uv($indiceOms, $tipoRetorno = false){
 		'cor' => $cor,
 		'tempo_exposicao' => $tempoMaxExposicao
 	);
+}
+
+function get_cor_temperatura($temp){
+	$cor = '#0000CD'; //muito frio, azul forte
+	if($temp >= 0 && $temp < 6)
+		$cor = '#0000FF'; //azul -forte
+	if($temp < 10)
+		$cor = '#1E90FF'; //azul --forte
+	else if($temp < 17)
+		$cor = '#4876FF'; //azul claro
+	else if($temp < 25)
+		$cor = '#DAA520'; //bege
+	else if($temp < 30)
+		$cor = '#FF8C00'; //laranja
+	else if($temp < 35)
+		$cor = '#CD3333'; //vermelho
+	else
+		$cor = '#B22222'; //bordo
+
+	return $cor; 
 }
 
 // $dataTest = '2017-06-19';

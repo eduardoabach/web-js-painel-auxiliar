@@ -252,6 +252,55 @@ function date_to_db($date, $default = null){
 	return sprintf('%d-%s-%s', $a, $m, $d);
 }
 
+function data_to_array($data=''){
+	$arrayData = array();
+	if($data != null){
+		if(strstr($data,"-"))
+        	$exp = "-";
+		else if(strstr($data,"/"))
+			$exp = "/";
+		else if(strstr($data,"_"))
+			$exp = "_";
+		
+		$dt = explode($exp, $data);
+		$arrayData['separador'] = $exp;
+		if($exp=='-' || $exp=='_'){
+			$arrayData['dia'] = trim($dt[2]);
+			$arrayData['mes'] = trim($dt[1]);
+			$arrayData['ano'] = trim($dt[0]);
+		} else if($exp=='/'){
+			$arrayData['dia'] = trim($dt[0]);
+			$arrayData['mes'] = trim($dt[1]);
+			$arrayData['ano'] = trim($dt[2]);
+		}
+	}
+	return $arrayData;
+}
+
+
+function get_nome_mes_ano($mes = null){
+	$meses = array(
+		1  => 'Janeiro',
+		2  => 'Fevereiro',
+		3  => 'Março',
+		4  => 'Abril',
+		5  => 'Maio',
+		6  => 'Junho',
+		7  => 'Julho',
+		8  => 'Agosto',
+		9  => 'Setembro',
+		10 => 'Outubro',
+		11 => 'Novembro',
+		12 => 'Dezembro',
+	);
+
+	if (!is_null($mes)) {
+		return $meses[(int)$mes];
+	}
+
+	return $meses;
+}
+
 function dias_entre_datas($date1, $date2){
 	$diff = date_diference($date1, $date2);
 	return $diff->days;

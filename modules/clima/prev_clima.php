@@ -37,8 +37,8 @@ $xmlOb = new SimpleXMLElement($page);
 	    			<td width="30px"></td>
 	    			<td width="60px" align="center">Temp.</td>
 	    			<td>Clima</td>
-	    			<td width="100px" align="center">UV</td>
 	    			<td></td>
+	    			<td width="100px" align="center">UV</td>
 	    		</tr>
 	    	</thead>
 	    	<tbody>
@@ -48,21 +48,33 @@ $xmlOb = new SimpleXMLElement($page);
 						$siglaDesc = get_inpe_cond_tempo(trim($diaPrev->tempo));
 						$clima = ($siglaDesc !== false) ? $siglaDesc : '';
 						$infoUv = get_oms_indice_uv(trim($diaPrev->iuv));
+
+						$dataUser = date_to_user($diaPrev->dia);
+						$dataArr = data_to_array($diaPrev->dia);
+						$nomeMes = get_nome_mes_ano($dataArr['mes']);
+
 						$corUv = $infoUv['cor'];
+						$corTempMin = get_cor_temperatura($diaPrev->minima);
+						$corTempMax = get_cor_temperatura($diaPrev->maxima);
 						?>
 						<tr>
-							<td align="center"><?=date_to_user($diaPrev->dia)?></td>
+							<td align="center" title="<?=$dataUser?>">
+								<?=$dataArr['dia']?><br>
+								<?=$nomeMes?>
+							</td>
 							<td><?=get_dia_da_semana($diaPrev->dia, 3)?></td>
-							<td align="center"><?=$diaPrev->minima?>~<?=$diaPrev->maxima?></td>
+							<td align="center">
+								<strong style="color:<?=$corTempMin?>"><?=$diaPrev->minima?></strong>~
+								<strong style="color:<?=$corTempMax?>"><?=$diaPrev->maxima?></strong>
+							</td>
 							<td data-descricao="<?=$clima['descricao']?>">
 								<?=$clima['nome']?>		
 							</td>
 							<td align="center">
-								<?=(int)$diaPrev->iuv?><br>
-								<small><?=$infoUv['risco']?></small>
+								<img width="55" height="37" src='<?=get_inpe_img_clima_sigla(trim($diaPrev->tempo))?>'>
 							</td>
 							<td align="center">
-								<img width="55" height="37" src='<?=get_inpe_img_clima_sigla(trim($diaPrev->tempo))?>'>
+								<strong title="RISCO <?=$infoUv['risco']?>" style="color:<?=$infoUv['cor']?>"><?=(int)$diaPrev->iuv?></strong>
 							</td>
 						</tr>
 						<?php
