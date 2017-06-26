@@ -22,7 +22,6 @@ if(isset($litecoinBRL['ticker'])){
 	    	<thead>
 	    		<tr>
 	    			<td>Moeda</td>
-	    			<td>Origem</td>
 	    			<td>Compra</td>
 	    			<td>Venda</td>
 	    			<td>Flutuação</td>
@@ -30,22 +29,19 @@ if(isset($litecoinBRL['ticker'])){
 	    	</thead>
 	    	<tbody>
 				<tr>
-					<td>Bitcoin (Dólar)</td>
-					<td>blockchain.info</td>
+					<td>Bitcoin (Dólar)<br>blockchain.info</td>
 					<td>U$<?=$blockchainBitcoinUsd?></td>
 					<td>U$<?=$blockchainBitcoinUsd?></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>Bitcoin (Real)</td>
-					<td>mercadobitcoin.net</td>
+					<td>Bitcoin (Real)<br>mercadobitcoin.net</td>
 					<td>R$<?=$mercadoBitecoin['ticker']['buy']?> </td>
 					<td>R$<?=$mercadoBitecoin['ticker']['sell']?> </td>
 					<td>R$<?=$mercadoBitecoin['ticker']['low']?> ~ R$<?=$mercadoBitecoin['ticker']['high']?></td>
 				</tr>
 				<tr>
-					<td>Litcoin (Real)</td>
-					<td>mercadobitcoin.net</td>
+					<td>Litcoin (Real)<br>mercadobitcoin.net</td>
 					<td>R$<?=$mercadoLitecoin['ticker']['buy']?> </td>
 					<td>R$<?=$mercadoLitecoin['ticker']['sell']?> </td>
 					<td>R$<?=$mercadoLitecoin['ticker']['low']?> ~ R$<?=$mercadoLitecoin['ticker']['high']?></td>
