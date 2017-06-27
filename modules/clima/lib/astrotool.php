@@ -1,39 +1,31 @@
 <?php
-
 /*
- AstroTool is a PHP library for calculating sun/moon position and light phases.
- https://github.com/gregseth/suncalc-php
+AstroTool é uma library PHP para cálculos envolvendo astros, em especial o sol e a lua. Suas posições e fases.
+ 
+Baseado no trabalho: Vladimir Agafonkin's JavaScript library.
+https://github.com/mourner/AstroTool
 
- Based on Vladimir Agafonkin's JavaScript library.
- https://github.com/mourner/suncalc
+Cálculos solares baseados em: http://aa.quae.nl/en/reken/zonpositie.html
+Cálculos lunares baseados em: http://aa.quae.nl/en/reken/hemelpositie.html
 
- Sun calculations are based on http://aa.quae.nl/en/reken/zonpositie.html
- formulas.
+Cálculos de iluminação e parametros lunares baseados em:
+Capítulo 48 de "Astronomical Algorithms" 2nd edition by Jean Meeus (Willmann-Bell, Richmond) 1998.
+E na url: http://idlastro.gsfc.nasa.gov/ftp/pro/astro/mphase.pro 
 
- Moon calculations are based on http://aa.quae.nl/en/reken/hemelpositie.html
- formulas.
-
- Calculations for illumination parameters of the moon are based on
- http://idlastro.gsfc.nasa.gov/ftp/pro/astro/mphase.pro formulas and Chapter 48
- of "Astronomical Algorithms" 2nd edition by Jean Meeus (Willmann-Bell,
- Richmond) 1998.
-
- Calculations for moon rise/set times are based on
- http://www.stargazing.net/kepler/moonrise.html article.
+Cálculos de posição da lua baseados em:
+http://www.stargazing.net/kepler/moonrise.html
 */
 
-
-// shortcuts for easier to read formulas
+// para facilitar a leitura de fórmulas
 define('PI', M_PI);
 define('rad', PI / 180);
 
-
-// date/time constants and conversions
+// date/time constantes e conversões
 define('daySec', 60 * 60 * 24);
 define('J1970', 2440588);
 define('J2000', 2451545);
-// general calculations for position
-define('e', rad * 23.4397); // obliquity of the Earth
+// cálculos gerais para posição
+define('e', rad * 23.4397); // obliquidade da Terra
 define('J0', 0.0009);
 
 
@@ -55,7 +47,7 @@ function altitude($H, $phi, $dec) { return asin(sin($phi) * sin($dec) + cos($phi
 
 function siderealTime($d, $lw) { return rad * (280.16 + 360.9856235 * $d) - $lw; }
 
-// calculations for sun times
+// cálculo para o tempo solar
 function julianCycle($d, $lw) { return round($d - J0 - $lw / (2 * PI)); }
 
 function approxTransit($Ht, $lw, $n) { return J0 + ($Ht + $lw) / (2 * PI) + $n; }
@@ -70,13 +62,11 @@ function getSetJ($h, $lw, $phi, $dec, $n, $M, $L) {
     return solarTransitJ($a, $M, $L);
 }
 
-// general sun calculations
-function solarMeanAnomaly($d) { return rad * (357.5291 + 0.98560028 * $d); }
-function eclipticLongitude($M) {
-
+// gerar cálculos gerais do sol
+function solarMeanAnomaly($d){ return rad * (357.5291 + 0.98560028 * $d); }
+function eclipticLongitude($M){
     $C = rad * (1.9148 * sin($M) + 0.02 * sin(2 * $M) + 0.0003 * sin(3 * $M)); // equation of center
-    $P = rad * 102.9372; // perihelion of the Earth
-
+    $P = rad * 102.9372; // periélio da Terra
     return $M + $C + $P + PI;
 }
 
@@ -88,7 +78,6 @@ function hoursLater($date, $h) {
 class DecRa {
     public $dec;
     public $ra;
-
     function __construct($d, $r) {
         $this->dec = $d;
         $this->ra  = $r;
@@ -97,7 +86,6 @@ class DecRa {
 
 class DecRaDist extends DecRa {
     public $dist;
-
     function __construct($d, $r, $dist) {
         parent::__construct($d, $r);
         $this->dist = $dist;
@@ -107,7 +95,6 @@ class DecRaDist extends DecRa {
 class AzAlt {
     public $azimuth;
     public $altitude;
-
     function __construct($az, $alt) {
         $this->azimuth = $az;
         $this->altitude = $alt;
@@ -116,7 +103,6 @@ class AzAlt {
 
 class AzAltDist extends AzAlt {
     public $dist;
-
     function __construct($az, $alt, $dist) {
         parent::__construct($az, $alt);
         $this->dist = $dist;
@@ -124,18 +110,15 @@ class AzAltDist extends AzAlt {
 }
 
 function sunCoords($d) {
-
     $M = solarMeanAnomaly($d);
     $L = eclipticLongitude($M);
-
     return new DecRa(
         declination($L, 0),
         rightAscension($L, 0)
     );
 }
 
-function moonCoords($d) { // geocentric ecliptic coordinates of the moon
-
+function moonCoords($d){ // Coordenadas eclípticas geocêntricas da lua
     $L = rad * (218.316 + 13.176396 * $d); // ecliptic longitude
     $M = rad * (134.963 + 13.064993 * $d); // mean anomaly
     $F = rad * (93.272 + 13.229350 * $d);  // mean distance
@@ -153,12 +136,11 @@ function moonCoords($d) { // geocentric ecliptic coordinates of the moon
 
 
 class AstroTool {
-
     var $date;
     var $lat;
     var $lng;
 
-    // sun times configuration (angle, morning name, evening name)
+    // configuração do tempo solar (angle, morning name, evening name)
     private $times = [
         [-0.833, 'nascerSol',       'porSol'   ], // 'sunrise',       'sunset'
         [  -0.3, 'nascerSolFim',    'porSolIni'], // 'sunriseEnd',    'sunsetStart'
@@ -168,7 +150,7 @@ class AstroTool {
         [     6, 'horaDouradaFim','horaDourada'] // 'goldenHourEnd', 'goldenHour'
     ];
 
-    // adds a custom time to the times config
+    // adicionar tempo customizado na config
     private function addTime($angle, $riseName, $setName) {
         $this->times[] = [$angle, $riseName, $setName];
     }
@@ -179,7 +161,7 @@ class AstroTool {
         $this->lng  = $lng;
     }
 
-    // calculates sun position for a given date and latitude/longitude
+    // calcular a posição do sol por uma data e latitude/longitude
     function getSunPosition($date=null) {
         $d = ($date !== null) ? toDays($date) : toDays($this->date);
         $lw  = rad * -$this->lng;
@@ -321,13 +303,3 @@ class AstroTool {
         return $result;
     }
 }
-
-// tests
-/*
-$test = new AstroTool(new DateTime(), 48.85, 2.35);
-print_r($test->getSunTimes());
-print_r($test->getMoonIllumination());
-print_r($test->getMoonTimes());
-print_r(getMoonPosition(new DateTime(), 48.85, 2.35));
-*/
-?>

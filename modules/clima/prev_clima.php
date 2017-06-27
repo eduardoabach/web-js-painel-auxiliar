@@ -78,6 +78,10 @@ $xmlOb = new SimpleXMLElement($page);
 						$faseDaLuaAstr = round($infoAstr['lua']['fase'], 4);
 						$descLuaAstr = $infoAstr['lua']['fase'];
 
+						// print_r('<pre>');
+						// print_r($infoAstr);
+						// print_r('</pre>');
+
 						$corUv = $infoUv['cor'];
 						$corTempMin = get_cor_temperatura($diaPrev->minima);
 						$corTempMax = get_cor_temperatura($diaPrev->maxima);
@@ -105,6 +109,21 @@ $xmlOb = new SimpleXMLElement($page);
 								<div class="lua-fase" data-fase="<?=$faseDaLuaAstr?>" data-size="30" title="<?=$descLua?>"></div>
 							</td>
 						</tr>
+						<!-- <tr>
+							<td colspan="7">
+								<div class="progress progress-slim">
+								  <div class="progress-bar" style="width: 35%; background-color: #aaaaff">
+								    <span class="sr-only">texto</span>
+								  </div>
+								  <div class="progress-bar progress-bar-striped" style="width: 50%; background-color: #ffaaff">
+								    <span class="sr-only">texto</span>
+								  </div>
+								  <div class="progress-bar" style="width: 10%">
+								    <span class="sr-only">texto</span>
+								  </div>
+								</div>
+							</td>
+						</tr> -->
 						<?php
 					}
 				}
