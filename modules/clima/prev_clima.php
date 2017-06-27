@@ -10,7 +10,6 @@ if(!($idCidade > 0)){
 	return false;
 }
 
-
 //ver
 // http://www.flextool.com.br/tabela_cores.html
 // http://astropbi.blogspot.com.br/2009/09/fases-da-lua.html
@@ -32,8 +31,6 @@ $page = download_page('http://servicos.cptec.inpe.br/XML/cidade/7dias/'.$idCidad
 $xmlOb = new SimpleXMLElement($page);
 
 ?>
-
-<div id="teste-lua"></div>
 
 <div class="row">
 	<div class="col-lg-12">
@@ -66,7 +63,7 @@ $xmlOb = new SimpleXMLElement($page);
 						$dataArr = data_to_array($diaPrev->dia);
 						$nomeMes = get_nome_mes_ano($dataArr['mes']);
 
-						$faseDaLua = fases_lua($diaPrev->dia);
+						$faseDaLua = round(fases_lua($diaPrev->dia),4);
 
 						$corUv = $infoUv['cor'];
 						$corTempMin = get_cor_temperatura($diaPrev->minima);
@@ -92,8 +89,7 @@ $xmlOb = new SimpleXMLElement($page);
 								<strong title="RISCO <?=$infoUv['risco']?>" style="color:<?=$infoUv['cor']?>"><?=(int)$diaPrev->iuv?></strong>
 							</td>
 							<td align="center">
-								<script>
-								</script>
+								<div class="lua-fase" data-fase="<?=$faseDaLua?>" data-size="30"></div>
 							</td>
 						</tr>
 						<?php

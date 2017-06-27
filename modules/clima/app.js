@@ -36,9 +36,12 @@ define(
 					size_class: 'col-lg-4',
 					data: {id_cidade : idCidade},
 					callback: function(div){
-						// drawPlanetPhase(div.find('#teste-lua').get(0), 0.15, true, {diameter:50, earthshine:0.1, blur:10, lightColour: '#9bf'});
-						drawPlanetPhase(div.find('#teste-lua').get(0), 0.3, false, {diameter:30, blur:0, shadowColour: '#666666', lightColour:  '#cccccc'});
-						//self.Render(div);
+
+						div.find('.lua-fase').each(function(){
+							var fase = $(this).data('fase'); // 0.1 ~ 1
+							var tamanho = $(this).data('size'); // 10, 30, 50. Em px
+							drawPlanetPhase(this, fase, false, {diameter: tamanho, blur:0});
+						});
 					}
 				});
 			}
