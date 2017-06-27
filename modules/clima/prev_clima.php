@@ -30,6 +30,8 @@ if(!($idCidade > 0)){
 $page = download_page('http://servicos.cptec.inpe.br/XML/cidade/7dias/'.$idCidade.'/previsao.xml');
 $xmlOb = new SimpleXMLElement($page);
 
+// criar array de datas autonomo, sistema ficar independente de webservice, internet
+
 ?>
 
 <div class="row">
@@ -68,6 +70,14 @@ $xmlOb = new SimpleXMLElement($page);
 						$faseDaLua = round($infoFasesLua['fracional'], 4);
 						$descLua = $infoFasesLua['descricao_completa'];
 
+						//ajustar a lua para usar o astronomico apenas, func para monstar desc, conceitos de fases em ptbr tbm
+						//passar a usar dados do astronomico
+
+						// ASTRONOMICO
+						$infoAstr = get_astronomico(trim($diaPrev->dia));
+						$faseDaLuaAstr = round($infoAstr['lua']['fase'], 4);
+						$descLuaAstr = $infoAstr['lua']['fase'];
+
 						$corUv = $infoUv['cor'];
 						$corTempMin = get_cor_temperatura($diaPrev->minima);
 						$corTempMax = get_cor_temperatura($diaPrev->maxima);
@@ -92,7 +102,7 @@ $xmlOb = new SimpleXMLElement($page);
 								<strong title="RISCO <?=$infoUv['risco']?>" style="color:<?=$infoUv['cor']?>"><?=(int)$diaPrev->iuv?></strong>
 							</td>
 							<td align="center">
-								<div class="lua-fase" data-fase="<?=$faseDaLua?>" data-size="30" title="<?=$descLua?>"></div>
+								<div class="lua-fase" data-fase="<?=$faseDaLuaAstr?>" data-size="30" title="<?=$descLua?>"></div>
 							</td>
 						</tr>
 						<?php

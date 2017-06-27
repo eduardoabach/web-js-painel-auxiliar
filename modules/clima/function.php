@@ -249,7 +249,7 @@ function fases_lua($dataRef=false, $tipoRetorno=false){
     } else if($tipoRetorno === false || $tipoRetorno == 'completo'){
 
     	// Dias para Lua Cheia
-    	$distCheia = $fracaoCicloAt - 0.55;
+    	$distCheia = $fracaoCicloAt - 0.55; // lua cheia seria 0.5, mas nos testes parece ficar mais preciso em .55, talvez alterar no futuro.
     	if($distCheia < 0)
     		$distCheia *= -1;
     	$diasParaCheia = (int)($distCheia * $tempoCicloLua);
@@ -268,4 +268,109 @@ function fases_lua($dataRef=false, $tipoRetorno=false){
 			'descricao_completa'=>$descCompleta);
     }
     return false;
+}
+
+function get_astronomico($dataDia){
+	require_once('./lib/astrotool.php');
+
+	// echo "[{$dataDia}]<br>";
+
+	$dtUsar = new DateTime($dataDia);
+
+	// print_r('c1<pre>');
+	// print_r($dtUsar);
+	// print_r('</pre>');
+
+	// $dtUsar = new DateTime('2017-07-03');
+
+	// print_r('c1<pre>');
+	// print_r($dtUsar);
+	// print_r('</pre>');
+
+	$sc = new AstroTool($dtUsar, -29.76, -51.14);
+	// die('a');
+
+	$momentos = array();
+	$hSol = $sc->getSunTimes($dtUsar);
+	if(is_array($hSol) && count($hSol) > 0){
+		$momentos['meio_dia_solar'] = $hSol['solMeioDia']->format('H:i:s');
+
+		$segDiaPleno = segundos_entre_datas($hSol['horaDourada']->format('Y-m-d H:i:s'), $hSol['horaDouradaFim']->format('Y-m-d H:i:s'));
+		$momentos['luz_dia_plena']['ini'] = $hSol['horaDouradaFim']->format('H:i:s');
+		$momentos['luz_dia_plena']['fim'] = $hSol['horaDourada']->format('H:i:s');
+		$momentos['luz_dia_plena']['tempo'] = segundos_to_hora($segDiaPleno);
+		$momentos['luz_dia_plena']['segundos'] = $segDiaPleno;
+
+		$segDiaCiv = segundos_entre_datas($hSol['crepusculo']->format('Y-m-d H:i:s'), $hSol['amanhecer']->format('Y-m-d H:i:s'));
+		$momentos['luz_dia_civ']['ini'] = $hSol['amanhecer']->format('H:i:s');
+		$momentos['luz_dia_civ']['fim'] = $hSol['crepusculo']->format('H:i:s');
+		$momentos['luz_dia_civ']['tempo'] = segundos_to_hora($segDiaCiv);
+		$momentos['luz_dia_civ']['segundos'] = $segDiaCiv;
+
+		$segDiaNaut = segundos_entre_datas($hSol['nauticoFim']->format('Y-m-d H:i:s'), $hSol['nauticoIni']->format('Y-m-d H:i:s'));
+		$momentos['luz_dia_naut']['ini'] = $hSol['nauticoIni']->format('H:i:s');
+		$momentos['luz_dia_naut']['fim'] = $hSol['nauticoFim']->format('H:i:s');
+		$momentos['luz_dia_naut']['tempo'] = segundos_to_hora($segDiaNaut);
+		$momentos['luz_dia_naut']['segundos'] = $segDiaNaut;
+
+		$segDiaAstr = segundos_entre_datas($hSol['noite']->format('Y-m-d H:i:s'), $hSol['noiteFim']->format('Y-m-d H:i:s'));
+		$momentos['luz_dia_astr']['ini'] = $hSol['noiteFim']->format('H:i:s');
+		$momentos['luz_dia_astr']['fim'] = $hSol['noite']->format('H:i:s');
+		$momentos['luz_dia_astr']['tempo'] = segundos_to_hora($segDiaAstr);
+		$momentos['luz_dia_astr']['segundos'] = $segDiaAstr;
+		
+		$momentos['nascer_sol']['ini'] = $hSol['nascerSol']->format('H:i:s');
+		$momentos['nascer_sol']['fim'] = $hSol['nascerSolFim']->format('H:i:s');
+
+		$momentos['por_sol']['ini'] = $hSol['porSolIni']->format('H:i:s');
+		$momentos['por_sol']['fim'] = $hSol['porSol']->format('H:i:s');
+	}
+
+	$luaLuz = $sc->getMoonIllumination($dtUsar);
+	if(is_array($luaLuz) && count($luaLuz) > 0){
+		$momentos['lua']['fase'] = $luaLuz['phase'];
+		$momentos['lua']['luz'] = $luaLuz['fraction'];
+		$momentos['lua']['angulo'] = $luaLuz['angle'];
+	}
+
+	$luaPresenca = $sc->getMoonTimes(false,$dtUsar);
+	if(is_array($luaPresenca) && count($luaPresenca) > 0){
+
+		// não existe saida quando o ciclo for completo
+		if(!isset($luaPresenca['lua_sair']))
+			$luaPresenca['lua_sair'] = new DateTime($dataDia.' 23:59:59');	
+		
+		$segLuaPresent = segundos_entre_datas($luaPresenca['lua_sair']->format('Y-m-d H:i:s'), $luaPresenca['lua_nascer']->format('Y-m-d H:i:s'));
+		$momentos['lua']['presenca']['nascer'] = $luaPresenca['lua_nascer']->format('H:i:s');
+		$momentos['lua']['presenca']['sair'] = $luaPresenca['lua_sair']->format('H:i:s');
+		$momentos['lua']['presenca']['tempo'] = segundos_to_hora($segDiaAstr);
+		$momentos['lua']['presenca']['segundos'] = $segLuaPresent;
+
+		// Para o visível vou ter que verificar quais dos eventos de exibicao acontece por ultimo, e qual dos de saida acontece primeiro
+		// visivel: $momentos['lua']['presenca']['nascer'], $momentos['luz_dia_naut']['fim']
+		// saida: $momentos['lua']['presenca']['sair'], $momentos['luz_dia_naut']['ini']
+		
+		$luaAparece = $momentos['lua']['presenca']['nascer'];
+		$luaVisivel = $momentos['luz_dia_naut']['fim'];
+		$luaPresencaAntesEstarVisivel = segundos_entre_horas($luaAparece, $luaVisivel); // valor negativo significa antes
+		$horaUltiEventVisivel = ($luaPresencaAntesEstarVisivel < 0) ? $luaVisivel : $luaAparece;
+		$luaDtVisIni = new DateTime($dataDia.' '.$horaUltiEventVisivel);
+
+		$luaSair = $momentos['lua']['presenca']['sair'];
+		$luaNaoVisivel = $momentos['luz_dia_naut']['ini'];
+		$luaSairAntesNaoVisivel = segundos_entre_horas($luaSair, $luaNaoVisivel);
+		$horaPrimeiroEventInvisivel = ($luaSairAntesNaoVisivel > 0) ? $luaSair : $luaNaoVisivel;
+		$luaDtVisFim = new DateTime($dataDia.' '.$horaPrimeiroEventInvisivel);
+
+		$segLuaVisivel = segundos_entre_datas($luaDtVisFim->format('Y-m-d H:i:s'), $luaDtVisIni->format('Y-m-d H:i:s'));
+		$momentos['lua']['presen_visivel_noite']['visivel'] = $horaUltiEventVisivel;
+		$momentos['lua']['presen_visivel_noite']['fora'] = $horaPrimeiroEventInvisivel;
+		$momentos['lua']['presen_visivel_noite']['tempo'] = segundos_to_hora($segLuaVisivel);
+		$momentos['lua']['presen_visivel_noite']['segundos'] = $segLuaVisivel;		
+	}
+
+	// print_r('c1<pre>');
+	// print_r($sc->getMoonPosition($dtUsar));
+	// print_r('</pre>');
+	return $momentos;
 }
