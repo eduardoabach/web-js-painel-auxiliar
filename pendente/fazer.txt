@@ -9,10 +9,16 @@ altitude km; gravidade(m/s)
 4000;3,7
 10000;1,49
 
+//olhar
+https://cidades.ibge.gov.br/v4/brasil/rs/sao-leopoldo/panorama
+
 
 #projeto painel prioridades
 btn travar posição modal
 config cor modal
+cliar modal msg para desc em title
+	class que faz elemento ter ponteiro hand
+		ao clicar js pega title do elemento e abre em mensagem para user
 clima
 	etapas para ampliar detalhes
 		uv
@@ -20,6 +26,20 @@ clima
 		movimento do sol
 		fazes da lua / movimento da lua
 			iluminação da noite
+		ver se possivel distancia da lua //https://github.com/gregseth/suncalc-php
+			ver possibilidade de verificar maré, se possível influencia da lua sobre ela
+	detalhes data base geral
+		estação do ano
+			mostrar sigla, no title e dias para próxima estação
+			giglas
+				inv
+				pri
+				ver
+				out
+		inclinação da terra em relacao ao sol // https://github.com/solarissmoke/php-moon-phase/blob/master/Solaris/MoonPhase.php
+			angulo e % em relacao ao limite que pode chegar
+		distancia do sol em relacao a terra
+			talvez km, mas o mais importante é o % em relacao ao max e min normal
 modo de telas configurável
 	janelas arrastáveis
 	fixo na tela (mobile responsível)
