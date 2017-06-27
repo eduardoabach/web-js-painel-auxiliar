@@ -149,6 +149,33 @@ function get_timestamp_hour($timestamp){
 	return slice_timestamp($timestamp)->hour;
 }
 
+function hora_to_segundos($hora){
+	$arrHora = explode(':', $hora);
+	if(count($arrHora) === 3)
+		return ($arrHora[0]*60*60) + ($arrHora[1]*60) + $arrHora[2];
+	return false;
+
+	$horas = floor($segundosTotal/60/60);
+	$segundosTotal -= $horas*60*60;
+	$minutos = floor($segundosTotal/60);
+	$segundosTotal -= $minutos*60;
+	return str_pad($horas, 2, 0, STR_PAD_LEFT).':'.str_pad($minutos, 2, 0, STR_PAD_LEFT).':'.str_pad($segundosTotal, 2, 0, STR_PAD_LEFT);
+}
+
+function segundos_to_hora($segundosTotal){
+	$horas = floor($segundosTotal/60/60);
+	$segundosTotal -= $horas*60*60;
+	$minutos = floor($segundosTotal/60);
+	$segundosTotal -= $minutos*60;
+	return str_pad($horas, 2, 0, STR_PAD_LEFT).':'.str_pad($minutos, 2, 0, STR_PAD_LEFT).':'.str_pad($segundosTotal, 2, 0, STR_PAD_LEFT);
+}
+
+function segundos_entre_horas($hora1, $hora2){
+	$segH1 = hora_to_segundos($hora1);
+	$segH2 = hora_to_segundos($hora2);
+	return $segH1-$segH2;
+}
+
 function segundos_entre_datas($data1, $data2){
 	return strtotime($data1) - strtotime($data2);
 }
