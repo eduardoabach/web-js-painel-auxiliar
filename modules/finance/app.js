@@ -18,10 +18,10 @@ define(
 			},
 			Render: function(el_content){
 				var self = this;
-
 				el_content.find('.f-opt').click(function(){
 					var s_option = $(this).data('option');
-					self.PainelFinan(s_option);
+					var titulo = $(this).html();
+					self.PainelFinan(s_option, titulo);
 				});
 			},
 			PainelFinan: function(comand, titulo){
@@ -33,7 +33,7 @@ define(
 				App.Modal({
 					title: titulo,
 					url: self.Url(comand),
-					size_class: 'col-lg-4',
+					size_class: 'col-lg-3',
 					callback: function(div){
 					}
 				});
