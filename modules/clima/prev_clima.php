@@ -10,6 +10,14 @@ if(!($idCidade > 0)){
 	return false;
 }
 
+//ver
+// http://www.flextool.com.br/tabela_cores.html
+// http://astropbi.blogspot.com.br/2009/09/fases-da-lua.html
+// https://github.com/codebox/js-planet-phase/blob/master/planet_phase.js
+// https://github.com/codebox/js-planet-phase/blob/master/planet_phase.html
+// http://codebox.org.uk/pages/html-moon-planet-phases
+
+
 // #webservice previsao do tempo
 // http://servicos.cptec.inpe.br/XML/listaCidades?city=porto%20alegre // para buscar cods
 // http://servicos.cptec.inpe.br/XML/listaCidades // 237 = poa, 5092 sapirang, 1929 estancia velha, 3591 nh, 4969 sao leo
@@ -22,7 +30,10 @@ if(!($idCidade > 0)){
 $page = download_page('http://servicos.cptec.inpe.br/XML/cidade/7dias/'.$idCidade.'/previsao.xml');
 $xmlOb = new SimpleXMLElement($page);
 
+// criar array de datas autonomo, sistema ficar independente de webservice, internet
+
 ?>
+
 <div class="row">
 	<div class="col-lg-12">
 	    <strong><?=$xmlOb->nome.', '.$xmlOb->uf?></strong> <small>(Atualização: <?=date_to_user($xmlOb->atualizacao)?>)</small>
@@ -37,8 +48,9 @@ $xmlOb = new SimpleXMLElement($page);
 	    			<td width="30px"></td>
 	    			<td width="60px" align="center">Temp.</td>
 	    			<td>Clima</td>
-	    			<td width="100px" align="center">UV</td>
 	    			<td></td>
+	    			<td width="100px" align="center">UV</td>
+	    			<td width="30px" align="center">Lua</td>
 	    		</tr>
 	    	</thead>
 	    	<tbody>
@@ -48,23 +60,70 @@ $xmlOb = new SimpleXMLElement($page);
 						$siglaDesc = get_inpe_cond_tempo(trim($diaPrev->tempo));
 						$clima = ($siglaDesc !== false) ? $siglaDesc : '';
 						$infoUv = get_oms_indice_uv(trim($diaPrev->iuv));
+
+						$dataUser = date_to_user($diaPrev->dia);
+						$dataArr = data_to_array($diaPrev->dia);
+						$nomeMes = get_nome_mes_ano($dataArr['mes']);
+
+						// LUA 
+						$infoFasesLua = fases_lua($diaPrev->dia);
+						$faseDaLua = round($infoFasesLua['fracional'], 4);
+						$descLua = $infoFasesLua['descricao_completa'];
+
+						//ajustar a lua para usar o astronomico apenas, func para monstar desc, conceitos de fases em ptbr tbm
+						//passar a usar dados do astronomico
+
+						// ASTRONOMICO
+						$infoAstr = get_astronomico(trim($diaPrev->dia));
+						$faseDaLuaAstr = round($infoAstr['lua']['fase'], 4);
+						$descLuaAstr = $infoAstr['lua']['fase'];
+
+						// print_r('<pre>');
+						// print_r($infoAstr);
+						// print_r('</pre>');
+
 						$corUv = $infoUv['cor'];
+						$corTempMin = get_cor_temperatura($diaPrev->minima);
+						$corTempMax = get_cor_temperatura($diaPrev->maxima);
 						?>
 						<tr>
-							<td align="center"><?=date_to_user($diaPrev->dia)?></td>
+							<td align="center" title="<?=$dataUser?>">
+								<?=$dataArr['dia']?><br>
+								<?=$nomeMes?>
+							</td>
 							<td><?=get_dia_da_semana($diaPrev->dia, 3)?></td>
-							<td align="center"><?=$diaPrev->minima?>~<?=$diaPrev->maxima?></td>
+							<td align="center">
+								<strong style="color:<?=$corTempMin?>"><?=$diaPrev->minima?></strong>~
+								<strong style="color:<?=$corTempMax?>"><?=$diaPrev->maxima?></strong>
+							</td>
 							<td data-descricao="<?=$clima['descricao']?>">
 								<?=$clima['nome']?>		
 							</td>
 							<td align="center">
-								<?=(int)$diaPrev->iuv?><br>
-								<small><?=$infoUv['risco']?></small>
+								<img width="55" height="37" src='<?=get_inpe_img_clima_sigla(trim($diaPrev->tempo))?>'>
 							</td>
 							<td align="center">
-								<img width="55" height="37" src='modules/clima/img/<?=trim($diaPrev->tempo)?>.png'>
+								<strong title="RISCO <?=$infoUv['risco']?>" style="color:<?=$infoUv['cor']?>"><?=(int)$diaPrev->iuv?></strong>
+							</td>
+							<td align="center">
+								<div class="lua-fase" data-fase="<?=$faseDaLuaAstr?>" data-size="30" title="<?=$descLua?>"></div>
 							</td>
 						</tr>
+						<!-- <tr>
+							<td colspan="7">
+								<div class="progress progress-slim">
+								  <div class="progress-bar" style="width: 35%; background-color: #aaaaff">
+								    <span class="sr-only">texto</span>
+								  </div>
+								  <div class="progress-bar progress-bar-striped" style="width: 50%; background-color: #ffaaff">
+								    <span class="sr-only">texto</span>
+								  </div>
+								  <div class="progress-bar" style="width: 10%">
+								    <span class="sr-only">texto</span>
+								  </div>
+								</div>
+							</td>
+						</tr> -->
 						<?php
 					}
 				}

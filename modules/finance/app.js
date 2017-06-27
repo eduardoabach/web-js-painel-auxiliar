@@ -33,7 +33,7 @@ define(
 				App.Modal({
 					title: titulo,
 					url: self.Url(comand),
-					size_class: 'col-lg-3',
+					size_class: 'col-lg-6',
 					callback: function(div){
 					}
 				});

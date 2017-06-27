@@ -4,20 +4,43 @@ include('../tools/numeros.php');
 
 //outras e fonte br, implementar no futuro
 //https://www.mercadobitcoin.net/api/v2/ticker_litecoin/
-$bitcoinUsd = download_page('https://blockchain.info/frombtc?currency=USD&value=100000000&format=json');
-$bitcoinBRL = download_page('https://blockchain.info/frombtc?currency=BRL&value=100000000&format=json');
+$blockchainBitcoinUsd = download_page('https://blockchain.info/frombtc?currency=USD&value=100000000&format=json');
+// $blockchainBitcoinBrl = download_page('https://blockchain.info/frombtc?currency=BRL&value=100000000&format=json');
 
-$litecoinBRL = json_decode(download_page('https://www.mercadobitcoin.net/api/v2/ticker_litecoin/'),true); // true do json_decode para criar array
-
+$mercadoBitecoin = json_decode(download_page('https://www.mercadobitcoin.net/api/v2/ticker/'), true);
+$mercadoLitecoin = json_decode(download_page('https://www.mercadobitcoin.net/api/v2/ticker_litecoin/'), true);
 ?>
 <div class="row">
-	<div class="col-lg-4">Bitcoin</div>
-	<div class="col-lg-4">R$ <?=$bitcoinBRL?></div>
-	<div class="col-lg-4">U$ <?=$bitcoinUsd?></div>
+	<div class="col-lg-12">
+	    <table class="table table-hover table-condensed">
+	    	<thead>
+	    		<tr>
+	    			<td>Moeda</td>
+	    			<td>Compra</td>
+	    			<td>Venda</td>
+	    			<td>Flutuação</td>
+	    		</tr>
+	    	</thead>
+	    	<tbody>
+				<tr>
+					<td>Bitcoin (Dólar)<br>blockchain.info</td>
+					<td>U$<?=$blockchainBitcoinUsd?></td>
+					<td>U$<?=$blockchainBitcoinUsd?></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Bitcoin (Real)<br>mercadobitcoin.net</td>
+					<td>R$<?=$mercadoBitecoin['ticker']['buy']?> </td>
+					<td>R$<?=$mercadoBitecoin['ticker']['sell']?> </td>
+					<td>R$<?=$mercadoBitecoin['ticker']['low']?> ~ R$<?=$mercadoBitecoin['ticker']['high']?></td>
+				</tr>
+				<tr>
+					<td>Litcoin (Real)<br>mercadobitcoin.net</td>
+					<td>R$<?=$mercadoLitecoin['ticker']['buy']?> </td>
+					<td>R$<?=$mercadoLitecoin['ticker']['sell']?> </td>
+					<td>R$<?=$mercadoLitecoin['ticker']['low']?> ~ R$<?=$mercadoLitecoin['ticker']['high']?></td>
+				</tr>
+	    	</tbody>
+		</table>
+    </div>
 </div>
-<div class="row">
-	<div class="col-lg-4">Litecoin</div>
-	<div class="col-lg-4">R$<?=(isset($litecoinBRL['ticker']['last'])) ? number_to_user($litecoinBRL['ticker']['last']) : ''?></div>
-	<div class="col-lg-4"></div>
-</div>
-

@@ -47,6 +47,14 @@ function get_inpe_cond_tempo($sigla){
 	return (isset($list[$sigla])) ? $list[$sigla] : false;
 }
 
+function get_inpe_img_clima_sigla($sigla){
+	return 'modules/clima/img/inpe/'.$sigla.'.png';
+}
+
+function get_img_fase_lua($fase){
+	return 'modules/clima/img/lua_fase/'.$fase.'.png';
+}
+
 // Escala de tons de pele por fitzpatrick.
 // Pigmentacao imediata = 6h~8h
 // Pigmentacao retardada = 10h~14h
@@ -108,29 +116,29 @@ function get_oms_indice_uv($indiceOms, $tipoRetorno = false){
 	// Para os baixos = 1, 2
 	$risco = 'BAIXO';
 	$medidas = 'Não são necessárias medidas adicionais.';
-	$cor = 'verde';
+	$cor = '#32CD32'; //verde
 	$tempoMaxExposicao = 60; // ou até mais, aqui está em minutos
 
 	// 3, 4, 5
 	if($indiceOms >= 3 && $indiceOms <= 5){
 		$risco = 'MODERADO';
 		$medidas = 'Protetor solar e óculos de sol. Procurar sombra durante as 10h e as 16h.';
-		$cor = 'amarelo';
+		$cor = '#CCAA00'; //amarelo
 		$tempoMaxExposicao = 45;
 	} else if($indiceOms >= 6 && $indiceOms <= 7){
 		$risco = 'ALTO';
 		$medidas = 'Protetor solar, óculos de sol com filtro UV e chapéu. Procurar sombra durante as 10h e as 16h.';
-		$cor = 'laranja';
+		$cor = '#FF7F00'; //laranja
 		$tempoMaxExposicao = 30;
 	} else if($indiceOms >= 8 && $indiceOms <= 10){
 		$risco = 'MUITO ALTO';
 		$medidas = 'Protetor solar, óculos de sol com filtro UV, chapéu e guarda-sol. Evite a exposição solar entre as 10h e as 16h. As crianças devem evitar a exposição solar durante todo o dia.';
-		$cor = 'vermelho';
+		$cor = '#B22222'; //vermelho
 		$tempoMaxExposicao = 25;
 	} else if($indiceOms >= 11){ // Pode ir até 14
 		$risco = 'EXTREMO';
 		$medidas = 'Evitar a exposição solar.';
-		$cor = 'roxo';
+		$cor = '#9400D3'; //roxo
 		$tempoMaxExposicao = 10;
 	}
 
@@ -149,68 +157,220 @@ function get_oms_indice_uv($indiceOms, $tipoRetorno = false){
 	);
 }
 
+function get_cor_temperatura($temp){
+	$cor = '#0000CD'; //muito frio, azul forte
+	if($temp >= 0 && $temp < 6)
+		$cor = '#0000FF'; //azul -forte
+	if($temp < 10)
+		$cor = '#1E90FF'; //azul --forte
+	else if($temp < 17)
+		$cor = '#4876FF'; //azul claro
+	else if($temp < 25)
+		$cor = '#DAA520'; //bege
+	else if($temp < 30)
+		$cor = '#FF8C00'; //laranja
+	else if($temp < 35)
+		$cor = '#CD3333'; //vermelho
+	else
+		$cor = '#B22222'; //bordo
+
+	return $cor; 
+}
+
 // $dataTest = '2017-06-19';
 // echo fases_lua($dataTest);
-function fases_lua($dataRef=false){
+// fases_lua(); // retorna array com dados do dia atual
+// modificado de http://www.voidware.com/moon_phase.htm
+// tipos de retorno: fracional, descricao, completo
+function fases_lua($dataRef=false, $tipoRetorno=false){
+	$tempoCicloLua = 29.5305882;
     if($dataRef == false)
         $timestamp = time();
     else
         $timestamp = strtotime($dataRef);
     
-    $year = date('Y', $timestamp);
-    $month = date('n', $timestamp);
-    $day = date('j', $timestamp);
+    $ano = date('Y', $timestamp);
+    $mes = date('n', $timestamp);
+    $dia = date('j', $timestamp);
     
-    //modified from http://www.voidware.com/moon_phase.htm
-    $c = $e = $jd = $b = 0;
-
-    if ($month < 3){
-        $year--;
-        $month += 12;
+    if($mes < 3){
+        $ano--;
+        $mes += 12;
     }
 
-    ++$month;
-    $c = 365.25 * $year;
-    $e = 30.6 * $month;
-    $jd = $c + $e + $day - 694039.09;	//jd is total days elapsed
-    $jd /= 29.5305882;					//divide by the moon cycle
-    $b = (int) $jd;						//int(jd) -> b, take integer part of jd
-    $jd -= $b;							//subtract integer part to leave fractional part of original jd
-    $b = round($jd * 8);				//scale fraction from 0-8 and round
+    ++$mes;
+    $anoDias = 365.25 * $ano;
+    $mesDias = 30.6 * $mes;
+    $tempoTotal = $anoDias + $mesDias + $dia - 694039.09; // total de dias passados
+    $tempoTotal /= $tempoCicloLua; //dividido pelo ciclo da lua
+    $ciclosCompletos = (int) $tempoTotal; //int(jd) -> formata ciclos completos
+    $fracaoCicloAt = $tempoTotal - $ciclosCompletos; //subtrai os ciclos completo para ficar com fracao em andamento
 
-    if ($b >= 8 ){
-        $b = 0;//0 and 8 are the same so turn 8 into 0
+    if($tipoRetorno == 'fracional')
+    	return $fracaoCicloAt;
+
+    $faseSimplif = round($fracaoCicloAt * 8); // criar escala fracional de 0-8
+    if($faseSimplif >= 8 ){
+        $faseSimplif = 0; // 0 e 8 são o mesmo, fechando ciclo
     }
 
-    switch ($b)	{
+    $desc = '';
+    switch($faseSimplif){
         case 0:
-            return 'Nova'; //New Moon
+            $desc = 'Nova'; //New Moon
             break;
         case 1:
-            return 'Crescente Côncava';
-            //return 'Emergente'; //Waxing Crescent Moon
+            $desc = 'Crescente Côncava'; //'Emergente'; //Waxing Crescent Moon
             break;
         case 2:
-            return 'Crescente'; //Quarter Moon
+            $desc = 'Crescente'; //Quarter Moon
             break;
         case 3:
-            return 'Crescente Convexa'; //Waxing Gibbous Moon
+            $desc = 'Crescente Convexa'; //Waxing Gibbous Moon
             break;
         case 4:
-            return 'Cheia'; //Full Moon
+            $desc = 'Cheia'; //Full Moon
             break;
         case 5:
-            return 'Minguante Convexa'; //Waning Gibbous Moon
-            //return 'Disseminadora'; //Waning Gibbous Moon
+            $desc = 'Minguante Convexa'; //Waning Gibbous Moon, 'Disseminadora'; //Waning Gibbous Moon
             break;
         case 6:
-            return 'Minguante'; //Last Quarter Moon
+            $desc = 'Minguante'; //Last Quarter Moon
             break;
         case 7:
-            return 'Minguante Côncava'; //Waning Crescent Moon
-            //return 'Balsâmica'; //Waning Crescent Moon
+            $desc = 'Minguante Côncava'; //Waning Crescent Moon, 'Balsâmica'; //Waning Crescent Moon
             break;
         default:
-            return 'Erro'; //Error
+            $desc = 'Erro'; //Error
     }
+
+    if($tipoRetorno == 'descricao'){
+    	return $desc;
+    } else if($tipoRetorno === false || $tipoRetorno == 'completo'){
+
+    	// Dias para Lua Cheia
+    	$distCheia = $fracaoCicloAt - 0.55; // lua cheia seria 0.5, mas nos testes parece ficar mais preciso em .55, talvez alterar no futuro.
+    	if($distCheia < 0)
+    		$distCheia *= -1;
+    	$diasParaCheia = (int)($distCheia * $tempoCicloLua);
+
+    	// Descricao completa
+    	$luzPercent = round($fracaoCicloAt*100);
+		$descIlumin = 'Luz '.$luzPercent.'%';
+		$prevLuaCheia = 'Cheia em '.$diasParaCheia.' dia(s)';
+		$descCompleta = $desc.', '.$descIlumin.', '.$prevLuaCheia;
+
+		return array(
+			'fracional'=>$fracaoCicloAt, 
+			'descricao'=>$desc, 
+			'dias_para_cheia'=>$diasParaCheia, 
+			'luz_percent'=>$luzPercent, 
+			'descricao_completa'=>$descCompleta);
+    }
+    return false;
+}
+
+function get_astronomico($dataDia){
+	require_once('./lib/astrotool.php');
+
+	// echo "[{$dataDia}]<br>";
+
+	$dtUsar = new DateTime($dataDia);
+
+	// print_r('c1<pre>');
+	// print_r($dtUsar);
+	// print_r('</pre>');
+
+	// $dtUsar = new DateTime('2017-07-03');
+
+	// print_r('c1<pre>');
+	// print_r($dtUsar);
+	// print_r('</pre>');
+
+	$sc = new AstroTool($dtUsar, -29.76, -51.14);
+	// die('a');
+
+	$momentos = array();
+	$hSol = $sc->getSunTimes($dtUsar);
+	if(is_array($hSol) && count($hSol) > 0){
+		$momentos['meio_dia_solar'] = $hSol['solMeioDia']->format('H:i:s');
+
+		$segDiaPleno = segundos_entre_datas($hSol['horaDourada']->format('Y-m-d H:i:s'), $hSol['horaDouradaFim']->format('Y-m-d H:i:s'));
+		$momentos['luz_dia_plena']['ini'] = $hSol['horaDouradaFim']->format('H:i:s');
+		$momentos['luz_dia_plena']['fim'] = $hSol['horaDourada']->format('H:i:s');
+		$momentos['luz_dia_plena']['tempo'] = segundos_to_hora($segDiaPleno);
+		$momentos['luz_dia_plena']['segundos'] = $segDiaPleno;
+
+		$segDiaCiv = segundos_entre_datas($hSol['crepusculo']->format('Y-m-d H:i:s'), $hSol['amanhecer']->format('Y-m-d H:i:s'));
+		$momentos['luz_dia_civ']['ini'] = $hSol['amanhecer']->format('H:i:s');
+		$momentos['luz_dia_civ']['fim'] = $hSol['crepusculo']->format('H:i:s');
+		$momentos['luz_dia_civ']['tempo'] = segundos_to_hora($segDiaCiv);
+		$momentos['luz_dia_civ']['segundos'] = $segDiaCiv;
+
+		$segDiaNaut = segundos_entre_datas($hSol['nauticoFim']->format('Y-m-d H:i:s'), $hSol['nauticoIni']->format('Y-m-d H:i:s'));
+		$momentos['luz_dia_naut']['ini'] = $hSol['nauticoIni']->format('H:i:s');
+		$momentos['luz_dia_naut']['fim'] = $hSol['nauticoFim']->format('H:i:s');
+		$momentos['luz_dia_naut']['tempo'] = segundos_to_hora($segDiaNaut);
+		$momentos['luz_dia_naut']['segundos'] = $segDiaNaut;
+
+		$segDiaAstr = segundos_entre_datas($hSol['noite']->format('Y-m-d H:i:s'), $hSol['noiteFim']->format('Y-m-d H:i:s'));
+		$momentos['luz_dia_astr']['ini'] = $hSol['noiteFim']->format('H:i:s');
+		$momentos['luz_dia_astr']['fim'] = $hSol['noite']->format('H:i:s');
+		$momentos['luz_dia_astr']['tempo'] = segundos_to_hora($segDiaAstr);
+		$momentos['luz_dia_astr']['segundos'] = $segDiaAstr;
+		
+		$momentos['nascer_sol']['ini'] = $hSol['nascerSol']->format('H:i:s');
+		$momentos['nascer_sol']['fim'] = $hSol['nascerSolFim']->format('H:i:s');
+
+		$momentos['por_sol']['ini'] = $hSol['porSolIni']->format('H:i:s');
+		$momentos['por_sol']['fim'] = $hSol['porSol']->format('H:i:s');
+	}
+
+	$luaLuz = $sc->getMoonIllumination($dtUsar);
+	if(is_array($luaLuz) && count($luaLuz) > 0){
+		$momentos['lua']['fase'] = $luaLuz['phase'];
+		$momentos['lua']['luz'] = $luaLuz['fraction'];
+		$momentos['lua']['angulo'] = $luaLuz['angle'];
+	}
+
+	$luaPresenca = $sc->getMoonTimes(false,$dtUsar);
+	if(is_array($luaPresenca) && count($luaPresenca) > 0){
+
+		// não existe saida quando o ciclo for completo
+		if(!isset($luaPresenca['lua_sair']))
+			$luaPresenca['lua_sair'] = new DateTime($dataDia.' 23:59:59');	
+		
+		$segLuaPresent = segundos_entre_datas($luaPresenca['lua_sair']->format('Y-m-d H:i:s'), $luaPresenca['lua_nascer']->format('Y-m-d H:i:s'));
+		$momentos['lua']['presenca']['nascer'] = $luaPresenca['lua_nascer']->format('H:i:s');
+		$momentos['lua']['presenca']['sair'] = $luaPresenca['lua_sair']->format('H:i:s');
+		$momentos['lua']['presenca']['tempo'] = segundos_to_hora($segDiaAstr);
+		$momentos['lua']['presenca']['segundos'] = $segLuaPresent;
+
+		// Para o visível vou ter que verificar quais dos eventos de exibicao acontece por ultimo, e qual dos de saida acontece primeiro
+		// visivel: $momentos['lua']['presenca']['nascer'], $momentos['luz_dia_naut']['fim']
+		// saida: $momentos['lua']['presenca']['sair'], $momentos['luz_dia_naut']['ini']
+		
+		$luaAparece = $momentos['lua']['presenca']['nascer'];
+		$luaVisivel = $momentos['luz_dia_naut']['fim'];
+		$luaPresencaAntesEstarVisivel = segundos_entre_horas($luaAparece, $luaVisivel); // valor negativo significa antes
+		$horaUltiEventVisivel = ($luaPresencaAntesEstarVisivel < 0) ? $luaVisivel : $luaAparece;
+		$luaDtVisIni = new DateTime($dataDia.' '.$horaUltiEventVisivel);
+
+		$luaSair = $momentos['lua']['presenca']['sair'];
+		$luaNaoVisivel = $momentos['luz_dia_naut']['ini'];
+		$luaSairAntesNaoVisivel = segundos_entre_horas($luaSair, $luaNaoVisivel);
+		$horaPrimeiroEventInvisivel = ($luaSairAntesNaoVisivel > 0) ? $luaSair : $luaNaoVisivel;
+		$luaDtVisFim = new DateTime($dataDia.' '.$horaPrimeiroEventInvisivel);
+
+		$segLuaVisivel = segundos_entre_datas($luaDtVisFim->format('Y-m-d H:i:s'), $luaDtVisIni->format('Y-m-d H:i:s'));
+		$momentos['lua']['presen_visivel_noite']['visivel'] = $horaUltiEventVisivel;
+		$momentos['lua']['presen_visivel_noite']['fora'] = $horaPrimeiroEventInvisivel;
+		$momentos['lua']['presen_visivel_noite']['tempo'] = segundos_to_hora($segLuaVisivel);
+		$momentos['lua']['presen_visivel_noite']['segundos'] = $segLuaVisivel;		
+	}
+
+	// print_r('c1<pre>');
+	// print_r($sc->getMoonPosition($dtUsar));
+	// print_r('</pre>');
+	return $momentos;
 }

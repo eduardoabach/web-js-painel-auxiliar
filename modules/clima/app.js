@@ -1,5 +1,5 @@
 define(
-	["jquery", "app", "func", "bootstrap"],
+	["jquery", "app", "clima/drawPlanetPhase", "func", "bootstrap"],
 	function ($, App) {
 		return {
 			Url: function(view){
@@ -36,7 +36,12 @@ define(
 					size_class: 'col-lg-4',
 					data: {id_cidade : idCidade},
 					callback: function(div){
-						//self.Render(div);
+
+						div.find('.lua-fase').each(function(){
+							var fase = $(this).data('fase'); // 0.1 ~ 1
+							var tamanho = $(this).data('size'); // 10, 30, 50. Em px
+							drawPlanetPhase(this, fase, false, {diameter: tamanho, blur:0});
+						});
 					}
 				});
 			}
