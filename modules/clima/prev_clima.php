@@ -63,7 +63,10 @@ $xmlOb = new SimpleXMLElement($page);
 						$dataArr = data_to_array($diaPrev->dia);
 						$nomeMes = get_nome_mes_ano($dataArr['mes']);
 
-						$faseDaLua = round(fases_lua($diaPrev->dia),4);
+						// LUA 
+						$infoFasesLua = fases_lua($diaPrev->dia);
+						$faseDaLua = round($infoFasesLua['fracional'], 4);
+						$descLua = $infoFasesLua['descricao_completa'];
 
 						$corUv = $infoUv['cor'];
 						$corTempMin = get_cor_temperatura($diaPrev->minima);
@@ -89,7 +92,7 @@ $xmlOb = new SimpleXMLElement($page);
 								<strong title="RISCO <?=$infoUv['risco']?>" style="color:<?=$infoUv['cor']?>"><?=(int)$diaPrev->iuv?></strong>
 							</td>
 							<td align="center">
-								<div class="lua-fase" data-fase="<?=$faseDaLua?>" data-size="30"></div>
+								<div class="lua-fase" data-fase="<?=$faseDaLua?>" data-size="30" title="<?=$descLua?>"></div>
 							</td>
 						</tr>
 						<?php

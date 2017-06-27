@@ -179,69 +179,93 @@ function get_cor_temperatura($temp){
 
 // $dataTest = '2017-06-19';
 // echo fases_lua($dataTest);
-function fases_lua($dataRef=false, $returnNome=false){
+// fases_lua(); // retorna array com dados do dia atual
+// modificado de http://www.voidware.com/moon_phase.htm
+// tipos de retorno: fracional, descricao, completo
+function fases_lua($dataRef=false, $tipoRetorno=false){
+	$tempoCicloLua = 29.5305882;
     if($dataRef == false)
         $timestamp = time();
     else
         $timestamp = strtotime($dataRef);
     
-    $year = date('Y', $timestamp);
-    $month = date('n', $timestamp);
-    $day = date('j', $timestamp);
+    $ano = date('Y', $timestamp);
+    $mes = date('n', $timestamp);
+    $dia = date('j', $timestamp);
     
-    //modified from http://www.voidware.com/moon_phase.htm
-    $c = $e = $jd = $b = 0;
-
-    if ($month < 3){
-        $year--;
-        $month += 12;
+    if($mes < 3){
+        $ano--;
+        $mes += 12;
     }
 
-    ++$month;
-    $c = 365.25 * $year;
-    $e = 30.6 * $month;
-    $jd = $c + $e + $day - 694039.09;	//jd is total days elapsed
-    $jd /= 29.5305882;					//divide by the moon cycle
-    $b = (int) $jd;						//int(jd) -> b, take integer part of jd
-    $jd -= $b;							//subtract integer part to leave fractional part of original jd
+    ++$mes;
+    $anoDias = 365.25 * $ano;
+    $mesDias = 30.6 * $mes;
+    $tempoTotal = $anoDias + $mesDias + $dia - 694039.09; // total de dias passados
+    $tempoTotal /= $tempoCicloLua; //dividido pelo ciclo da lua
+    $ciclosCompletos = (int) $tempoTotal; //int(jd) -> formata ciclos completos
+    $fracaoCicloAt = $tempoTotal - $ciclosCompletos; //subtrai os ciclos completo para ficar com fracao em andamento
 
-    if($returnNome === false)
-    	return $jd;
+    if($tipoRetorno == 'fracional')
+    	return $fracaoCicloAt;
 
-    $b = round($jd * 8);				//scale fraction from 0-8 and round
-    if ($b >= 8 ){
-        $b = 0;//0 and 8 are the same so turn 8 into 0
+    $faseSimplif = round($fracaoCicloAt * 8); // criar escala fracional de 0-8
+    if($faseSimplif >= 8 ){
+        $faseSimplif = 0; // 0 e 8 são o mesmo, fechando ciclo
     }
 
-    switch ($b)	{
+    $desc = '';
+    switch($faseSimplif){
         case 0:
-            return 'Nova'; //New Moon
+            $desc = 'Nova'; //New Moon
             break;
         case 1:
-            return 'Crescente Côncava';
-            //return 'Emergente'; //Waxing Crescent Moon
+            $desc = 'Crescente Côncava'; //'Emergente'; //Waxing Crescent Moon
             break;
         case 2:
-            return 'Crescente'; //Quarter Moon
+            $desc = 'Crescente'; //Quarter Moon
             break;
         case 3:
-            return 'Crescente Convexa'; //Waxing Gibbous Moon
+            $desc = 'Crescente Convexa'; //Waxing Gibbous Moon
             break;
         case 4:
-            return 'Cheia'; //Full Moon
+            $desc = 'Cheia'; //Full Moon
             break;
         case 5:
-            return 'Minguante Convexa'; //Waning Gibbous Moon
-            //return 'Disseminadora'; //Waning Gibbous Moon
+            $desc = 'Minguante Convexa'; //Waning Gibbous Moon, 'Disseminadora'; //Waning Gibbous Moon
             break;
         case 6:
-            return 'Minguante'; //Last Quarter Moon
+            $desc = 'Minguante'; //Last Quarter Moon
             break;
         case 7:
-            return 'Minguante Côncava'; //Waning Crescent Moon
-            //return 'Balsâmica'; //Waning Crescent Moon
+            $desc = 'Minguante Côncava'; //Waning Crescent Moon, 'Balsâmica'; //Waning Crescent Moon
             break;
         default:
-            return 'Erro'; //Error
+            $desc = 'Erro'; //Error
     }
+
+    if($tipoRetorno == 'descricao'){
+    	return $desc;
+    } else if($tipoRetorno === false || $tipoRetorno == 'completo'){
+
+    	// Dias para Lua Cheia
+    	$distCheia = $fracaoCicloAt - 0.55;
+    	if($distCheia < 0)
+    		$distCheia *= -1;
+    	$diasParaCheia = (int)($distCheia * $tempoCicloLua);
+
+    	// Descricao completa
+    	$luzPercent = round($fracaoCicloAt*100);
+		$descIlumin = 'Luz '.$luzPercent.'%';
+		$prevLuaCheia = 'Cheia em '.$diasParaCheia.' dia(s)';
+		$descCompleta = $desc.', '.$descIlumin.', '.$prevLuaCheia;
+
+		return array(
+			'fracional'=>$fracaoCicloAt, 
+			'descricao'=>$desc, 
+			'dias_para_cheia'=>$diasParaCheia, 
+			'luz_percent'=>$luzPercent, 
+			'descricao_completa'=>$descCompleta);
+    }
+    return false;
 }
