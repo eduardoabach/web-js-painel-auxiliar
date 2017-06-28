@@ -9,13 +9,7 @@ $blockchainBitcoinUsd = download_page('https://blockchain.info/frombtc?currency=
 
 $mercadoBitecoin = json_decode(download_page('https://www.mercadobitcoin.net/api/v2/ticker/'), true);
 $mercadoLitecoin = json_decode(download_page('https://www.mercadobitcoin.net/api/v2/ticker_litecoin/'), true);
-if(isset($litecoinBRL['ticker'])){
-	$liteVenda = $litecoinBRL['ticker']['buy'];
-	$liteCompra = $litecoinBRL['ticker']['sell'];
-}
-
 ?>
-
 <div class="row">
 	<div class="col-lg-12">
 	    <table class="table table-hover table-condensed">
