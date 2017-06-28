@@ -1,8 +1,8 @@
 <?php 
-
-include('./function.php');
-include('../tools/utilidades.php');
-include('../tools/tempo.php');
+require dirname(__DIR__).'/tools/core.php';
+sys_set_module(__DIR__);
+sys_load_tool('tempo');
+sys_load_md('function');
 
 $idCidade = (isset($_POST['id_cidade'])) ? $_POST['id_cidade'] : false;
 if(!($idCidade > 0)){
@@ -16,7 +16,6 @@ if(!($idCidade > 0)){
 // https://github.com/codebox/js-planet-phase/blob/master/planet_phase.js
 // https://github.com/codebox/js-planet-phase/blob/master/planet_phase.html
 // http://codebox.org.uk/pages/html-moon-planet-phases
-
 
 // #webservice previsao do tempo
 // http://servicos.cptec.inpe.br/XML/listaCidades?city=porto%20alegre // para buscar cods
@@ -78,18 +77,16 @@ $xmlOb = new SimpleXMLElement($page);
 						$faseDaLuaAstr = round($infoAstr['lua']['fase'], 4);
 						$descLuaAstr = $infoAstr['lua']['fase'];
 
-						// print_r('<pre>');
-						// print_r($infoAstr);
-						// print_r('</pre>');
-
 						$corUv = $infoUv['cor'];
 						$corTempMin = get_cor_temperatura($diaPrev->minima);
 						$corTempMax = get_cor_temperatura($diaPrev->maxima);
 						?>
 						<tr>
 							<td align="center" title="<?=$dataUser?>">
+								<button type="button" class="btn btn-sm btn-default info-dia" data-dia="<?=trim($diaPrev->dia)?>">
 								<?=$dataArr['dia']?><br>
-								<?=$nomeMes?>
+								<?=$nomeMes?>	
+								</button> 
 							</td>
 							<td><?=get_dia_da_semana($diaPrev->dia, 3)?></td>
 							<td align="center">
@@ -109,21 +106,6 @@ $xmlOb = new SimpleXMLElement($page);
 								<div class="lua-fase" data-fase="<?=$faseDaLuaAstr?>" data-size="30" title="<?=$descLua?>"></div>
 							</td>
 						</tr>
-						<!-- <tr>
-							<td colspan="7">
-								<div class="progress progress-slim">
-								  <div class="progress-bar" style="width: 35%; background-color: #aaaaff">
-								    <span class="sr-only">texto</span>
-								  </div>
-								  <div class="progress-bar progress-bar-striped" style="width: 50%; background-color: #ffaaff">
-								    <span class="sr-only">texto</span>
-								  </div>
-								  <div class="progress-bar" style="width: 10%">
-								    <span class="sr-only">texto</span>
-								  </div>
-								</div>
-							</td>
-						</tr> -->
 						<?php
 					}
 				}

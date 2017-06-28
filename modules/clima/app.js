@@ -42,6 +42,15 @@ define(
 							var tamanho = $(this).data('size'); // 10, 30, 50. Em px
 							drawPlanetPhase(this, fase, false, {diameter: tamanho, blur:0});
 						});
+
+						div.find('.info-dia').on('click',function(){
+							var dataDia = $(this).data('dia');
+							if(dataDia != undefined && dataDia != ''){
+								require([('tempo/app')], function(mod_name){
+									mod_name.InfoDia(dataDia);
+								});	
+							}
+						});
 					}
 				});
 			}

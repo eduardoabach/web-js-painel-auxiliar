@@ -182,6 +182,7 @@ function get_cor_temperatura($temp){
 // fases_lua(); // retorna array com dados do dia atual
 // modificado de http://www.voidware.com/moon_phase.htm
 // tipos de retorno: fracional, descricao, completo
+// NÃO É GEOGRAFICAMENTE PRECISA
 function fases_lua($dataRef=false, $tipoRetorno=false){
 	$tempoCicloLua = 29.5305882;
     if($dataRef == false)
@@ -273,22 +274,8 @@ function fases_lua($dataRef=false, $tipoRetorno=false){
 function get_astronomico($dataDia){
 	require_once('./lib/astrotool.php');
 
-	// echo "[{$dataDia}]<br>";
-
 	$dtUsar = new DateTime($dataDia);
-
-	// print_r('c1<pre>');
-	// print_r($dtUsar);
-	// print_r('</pre>');
-
-	// $dtUsar = new DateTime('2017-07-03');
-
-	// print_r('c1<pre>');
-	// print_r($dtUsar);
-	// print_r('</pre>');
-
 	$sc = new AstroTool($dtUsar, -29.76, -51.14);
-	// die('a');
 
 	$momentos = array();
 	$hSol = $sc->getSunTimes($dtUsar);
@@ -347,9 +334,6 @@ function get_astronomico($dataDia){
 		$momentos['lua']['presenca']['segundos'] = $segLuaPresent;
 
 		// Para o visível vou ter que verificar quais dos eventos de exibicao acontece por ultimo, e qual dos de saida acontece primeiro
-		// visivel: $momentos['lua']['presenca']['nascer'], $momentos['luz_dia_naut']['fim']
-		// saida: $momentos['lua']['presenca']['sair'], $momentos['luz_dia_naut']['ini']
-		
 		$luaAparece = $momentos['lua']['presenca']['nascer'];
 		$luaVisivel = $momentos['luz_dia_naut']['fim'];
 		$luaPresencaAntesEstarVisivel = segundos_entre_horas($luaAparece, $luaVisivel); // valor negativo significa antes
