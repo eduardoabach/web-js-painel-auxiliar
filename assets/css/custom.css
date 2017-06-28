@@ -22,8 +22,8 @@
 	padding-top: 3px;
 }
 
-.progress-slim {height: 10px;}
-.progress-slim .sr-only { position: relative; }
+.progress-slim {height: 14px;}
+.progress-slim .sr-only { position: relative; top: -2px; font-size: 10px; }
 
 .sys-move{
    cursor: grab;

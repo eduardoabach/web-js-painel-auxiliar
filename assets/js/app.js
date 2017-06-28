@@ -60,6 +60,10 @@ define(
 							options.callback(objConteudo);
 							objPanelJq.show();
 						},
+						error: function(elErr) { //XMLHttpRequest, textStatus, errorThrown
+							objConteudo.html('<div class="alert alert-warning"><strong>Indisponível!</strong> Tente novamente mais tarde.</div>');
+							console.log('Erro, ('+elErr.status+') '+elErr.statusText+' = '+elErr.responseText);
+						}
 					});
 				});
 			}

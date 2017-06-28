@@ -154,12 +154,6 @@ function hora_to_segundos($hora){
 	if(count($arrHora) === 3)
 		return ($arrHora[0]*60*60) + ($arrHora[1]*60) + $arrHora[2];
 	return false;
-
-	$horas = floor($segundosTotal/60/60);
-	$segundosTotal -= $horas*60*60;
-	$minutos = floor($segundosTotal/60);
-	$segundosTotal -= $minutos*60;
-	return str_pad($horas, 2, 0, STR_PAD_LEFT).':'.str_pad($minutos, 2, 0, STR_PAD_LEFT).':'.str_pad($segundosTotal, 2, 0, STR_PAD_LEFT);
 }
 
 function segundos_to_hora($segundosTotal){
