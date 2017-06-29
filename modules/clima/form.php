@@ -1,14 +1,10 @@
 <?php
-	$cidades = array(
-		'3591' => 'Novo Hamburgo',
-		'5092' => 'Sapiranga',
-		'1929' => 'Estância Velha',
-		'237' => 'Porto Alegre',
-		'3994' => 'Pinherinho do Vale',
-		'3511' => 'Nova Esperança do Sul',
-	);
-?>
+require_once dirname(__DIR__).'/tools/core.php';
+sys_set_module(__DIR__);
+sys_load_md('function');
+$cidades = get_cidade_all();
 
+?>
 <div class="row">
 	<div class="col-lg-12">
 		<?php foreach($cidades as $cod => $cidade){ ?>

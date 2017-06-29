@@ -1,5 +1,5 @@
 <?php 
-require dirname(__DIR__).'/tools/core.php';
+require_once dirname(__DIR__).'/tools/core.php';
 sys_set_module(__DIR__);
 sys_load_tool('tempo');
 sys_load_md('function');
@@ -10,64 +10,32 @@ if(!($idCidade > 0)){
 	return false;
 }
 
+$nomeCidade = get_nome_cidade($idCidade);
 $dataRef = date('Y-m-d');
+
 $qtdDiasVerif = 7;
-$listDias = array();
-for($i=0;$i<$qtdDiasVerif;$i++){
-	if($i > 0)
-		$dataRef = add_days($dataRef,1);
-	$listDias[$dataRef]['dia'] = $dataRef;
+$listDatas = list_days_add($dataRef, $qtdDiasVerif);
+$listInfo = array();
+foreach($listDatas as $dia){
+	$listInfo[$dia]['dia'] = $dia;
 }
 
+/* PREVISÃO DO TEMPO ------------ */
 sys_load_md_api('inpe_webservice');
 $inpeServ = new inpe_webservice();
 $previsaoTempo = $inpeServ->get_previsao_tempo_cidade($idCidade);
-
 if(isset($previsaoTempo['dias'])){
-	$listDias = array_merge($listDias, $previsaoTempo['dias']);
+	$listInfo = array_merge($listInfo, $previsaoTempo['dias']);
 }
-
-// pr($listDias);
-// die('a');
-
-// $infoUv = get_oms_indice_uv(trim($inf['iuv']));
-// $corUv = $infoUv['cor'];
-// $corTempMin = get_cor_temperatura($diaPrev->minima);
-// $corTempMax = get_cor_temperatura($diaPrev->maxima);
-
-//get_dia_da_semana($diaPrev->dia, 3)
-//$infoUv['risco']
-//$infoUv['cor']
-//$diaPrev->iuv
-//get_inpe_img_clima_sigla(trim($diaPrev->tempo))
-
-
-//ver
-// http://www.flextool.com.br/tabela_cores.html
-// http://astropbi.blogspot.com.br/2009/09/fases-da-lua.html
-// https://github.com/codebox/js-planet-phase/blob/master/planet_phase.js
-// https://github.com/codebox/js-planet-phase/blob/master/planet_phase.html
-// http://codebox.org.uk/pages/html-moon-planet-phases
-
-// #webservice previsao do tempo
-// http://servicos.cptec.inpe.br/XML/listaCidades?city=porto%20alegre // para buscar cods
-// http://servicos.cptec.inpe.br/XML/listaCidades // 237 = poa, 5092 sapirang, 1929 estancia velha, 3591 nh, 4969 sao leo
-// http://servicos.cptec.inpe.br/XML/cidade/3591/previsao.xml // previsao do tempo prox 4 dias
-// http://servicos.cptec.inpe.br/XML/cidade/7dias/3591/previsao.xml // previsao do tempo prox 7 dias
-// http://servicos.cptec.inpe.br/XML/cidade/7dias/-22.90/-47.06/previsaoLatLon.xml // 7 dias para latitudo e longitude, pegando a cidade mais proxima
-// http://servicos.cptec.inpe.br/XML/cidade/3591/estendida.xml // 7 dias depois dos 7 normais, totalizando 14 dias de previsao
-// http://servicos.cptec.inpe.br/XML/#estacoes-metar
-
-$page = download_page('http://servicos.cptec.inpe.br/XML/cidade/7dias/'.$idCidade.'/previsao.xml');
-$xmlOb = new SimpleXMLElement($page);
-
-// criar array de datas autonomo, sistema ficar independente de webservice, internet
+// pensar em usar a $previsaoTempo['atualizacao']
+/* ------------------------------ */
 
 ?>
 
 <div class="row">
 	<div class="col-lg-12">
-	    <strong><?=$xmlOb->nome.', '.$xmlOb->uf?></strong> <small>(Atualização: <?=date_to_user($xmlOb->atualizacao)?>)</small>
+	    <strong><?=$nomeCidade?></strong>
+	    <small><?=(isset($previsaoTempo['atualizacao'])) ? '(Atualização: '.date_to_user($xmlOb->atualizacao).')' : ''?></small>
     </div>
 </div>
 <div class="row">
@@ -86,7 +54,7 @@ $xmlOb = new SimpleXMLElement($page);
 	    	</thead>
 	    	<tbody>
 	    		<?php
-	    		foreach($listDias as $diaInf){
+	    		foreach($listInfo as $diaInf){
 
 					$dataUser = date_to_user($diaInf['dia']);
 					$dataArr = data_to_array($diaInf['dia']);

@@ -1,5 +1,38 @@
 <?php 
 
+//ver
+// http://www.flextool.com.br/tabela_cores.html
+// http://astropbi.blogspot.com.br/2009/09/fases-da-lua.html
+// https://github.com/codebox/js-planet-phase/blob/master/planet_phase.js
+// https://github.com/codebox/js-planet-phase/blob/master/planet_phase.html
+// http://codebox.org.uk/pages/html-moon-planet-phases
+
+// #webservice previsao do tempo
+// http://servicos.cptec.inpe.br/XML/listaCidades?city=porto%20alegre // para buscar cods
+// http://servicos.cptec.inpe.br/XML/listaCidades // 237 = poa, 5092 sapirang, 1929 estancia velha, 3591 nh, 4969 sao leo
+// http://servicos.cptec.inpe.br/XML/cidade/3591/previsao.xml // previsao do tempo prox 4 dias
+// http://servicos.cptec.inpe.br/XML/cidade/7dias/3591/previsao.xml // previsao do tempo prox 7 dias
+// http://servicos.cptec.inpe.br/XML/cidade/7dias/-22.90/-47.06/previsaoLatLon.xml // 7 dias para latitudo e longitude, pegando a cidade mais proxima
+// http://servicos.cptec.inpe.br/XML/cidade/3591/estendida.xml // 7 dias depois dos 7 normais, totalizando 14 dias de previsao
+// http://servicos.cptec.inpe.br/XML/#estacoes-metar
+
+
+function get_cidade_all(){
+	return array(
+		'3591' => 'Novo Hamburgo',
+		'5092' => 'Sapiranga',
+		'1929' => 'Estância Velha',
+		'237' => 'Porto Alegre',
+		'3994' => 'Pinherinho do Vale',
+		'3511' => 'Nova Esperança do Sul',
+	);
+}
+
+function get_nome_cidade($id){
+	$list = get_cidade_all();
+	return (isset($list[$id])) ? $list[$id] : false;
+}
+
 function get_inpe_img_clima_sigla($sigla){
 	return 'modules/clima/img/inpe/'.$sigla.'.png';
 }

@@ -32,7 +32,7 @@ define(
 				var self = this;
 				App.Modal({
 					title: 'Clima - Cidade',
-					url: self.Url('prev_clima'),
+					url: self.Url('prev_clima_c'),
 					size_class: 'col-lg-4',
 					data: {id_cidade : idCidade},
 					callback: function(div){
