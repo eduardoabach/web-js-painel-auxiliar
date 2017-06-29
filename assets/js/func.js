@@ -23,6 +23,8 @@ function mk_panel(id){
 
 // objeto recebido deve ser $
 function set_modal_zindex_top(elModal){
+   console.log('num:'+get_modal_max_zindex());
+   console.log('next:'+(get_modal_max_zindex()+1));
    $(elModal).css('z-index', get_modal_max_zindex()+1);
 }
 
@@ -34,12 +36,12 @@ function get_modal_max_zindex(){
 function get_max_zindex(elementsList){
    var zIndexMax = 0;
    for(var i = 0; i < elementsList.length; i++){
-      var zindex=document.defaultView.getComputedStyle(elementsList[i],null).getPropertyValue("z-index");
-      if ((zindex > zIndexMax) && (zindex != 'auto')){
+      var zindex=parseFloat(document.defaultView.getComputedStyle(elementsList[i],null).getPropertyValue("z-index"));
+      if (zindex > zIndexMax && zindex != 'auto'){
          zIndexMax = zindex;
       }
    }
-   return Number(zIndexMax);
+   return zIndexMax;
 }
 
 function draggable(id, desativ){
