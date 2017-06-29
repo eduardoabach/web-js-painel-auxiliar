@@ -39,6 +39,20 @@ function get_dia_da_semana($date, $corte=false){
 	return $dia;
 }
 
+function list_days_add($date, $tamanhoLista, $incremento=1){
+	$lastDate = $date;
+	$list = array($lastDate);
+	$tamanhoLista--;
+
+	if($tamanhoLista > 0){
+		for($i=0;$i<$tamanhoLista;$i++){
+			$list[] = $lastDate = add_days($lastDate, $incremento);
+		}
+	}
+
+	return $list;
+}
+
 function add_days($date, $days = 1){
 	$date = new DateTime($date);
 	if($days)
