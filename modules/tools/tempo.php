@@ -163,6 +163,23 @@ function get_timestamp_hour($timestamp){
 	return slice_timestamp($timestamp)->hour;
 }
 
+function dia_periodo_info($horaIni, $horaFim){
+	$info = array();
+	$info['antes']['seg'] = segundos_entre_horas($horaIni, '00:00:00');
+	$info['antes']['tempo'] = segundos_to_hora($info['antes']['seg']);
+	$info['antes']['percent_dia'] = segundos_percent_dia($info['antes']['seg']);
+
+	$info['durante']['seg'] = segundos_entre_horas($horaFim, $horaIni);
+	$info['durante']['tempo'] = segundos_to_hora($info['durante']['seg']);
+	$info['durante']['percent_dia'] = segundos_percent_dia($info['durante']['seg']);
+
+	$info['depois']['seg'] = segundos_entre_horas('23:59:59', $horaFim);
+	$info['depois']['tempo'] = segundos_to_hora($info['depois']['seg']);
+	$info['depois']['percent_dia'] = segundos_percent_dia($info['depois']['seg']);
+
+	return $info;
+}
+
 function hora_to_segundos($hora){
 	$arrHora = explode(':', $hora);
 	if(count($arrHora) === 3)
@@ -182,6 +199,14 @@ function segundos_entre_horas($hora1, $hora2){
 	$segH1 = hora_to_segundos($hora1);
 	$segH2 = hora_to_segundos($hora2);
 	return $segH1-$segH2;
+}
+
+function segundos_percent_dia($segundos){
+	return $segundos * 100 / 86400; // segundos do dia = 86400 = 24*60*60
+}
+
+function hora_percent_dia($hora){
+	return segundos_percent_dia(hora_to_segundos($hora));
 }
 
 function segundos_entre_datas($data1, $data2){

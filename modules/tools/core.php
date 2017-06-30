@@ -6,6 +6,16 @@ sys_load_tool('utilidades');
 sys_load_tool('tempo');
 /* ############################### */
 
+function sys_pos_geo(){
+	// latitude, longitude
+	return array('lat'=> -29.69, 'lng'=> -51.12); // novo hamburgo / Brasil
+}
+
+function sys_url_md_api($api,$complemento=null){
+	//MODULE.'/api/'.$api.'/api.php'
+	return 'modules/'.MODULE.'/api/'.$api.'/'.$complemento;
+}
+
 function sys_set_module($moduleName=null){
 	// pode ser mandada variavel local __DIR__, deve rastrear o item depois da pasta module
 	if(strstr($moduleName, '/') !== false){
