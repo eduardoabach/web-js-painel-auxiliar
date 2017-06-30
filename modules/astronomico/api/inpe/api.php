@@ -2,8 +2,10 @@
 require_once strstr(__DIR__, '/modules/', true).'/modules/tools/core.php';
 sys_set_module(__DIR__);
 
-class inpe_webservice{
+// Instituto Nacional de Pesquisas Espaciais
+class Inpe{
 	private $urlBase = 'http://servicos.cptec.inpe.br/XML/';
+	private $nome_api = 'inpe';
 
     public function __construct() {
         
@@ -22,7 +24,7 @@ class inpe_webservice{
 		if(isset($xmlOb->previsao)){
 			foreach($xmlOb->previsao as $diaPrev){
 				$inf = (array)$diaPrev;
-				$inf['tempo_inf'] = $this->get_inpe_cond_tempo(trim($inf['tempo']));
+				$inf['tempo_inf'] = $this->get_cond_tempo(trim($inf['tempo']));
 
 				$diaAt = trim($diaPrev->dia);
 				$previsao[$diaAt] = $inf;
@@ -32,8 +34,12 @@ class inpe_webservice{
 		return array('nome'=>$xmlOb->nome, 'uf'=>$xmlOb->uf, 'atualizacao'=>$xmlOb->atualizacao, 'dias'=>$previsao);
 	}
 
+	public function get_clima_img($sigla){
+		return sys_url_md_api($this->nome_api,'img_clima/'.$sigla.'.png');
+	}
+
 	// Siglas das condições do tempo do INPE
-	public function get_inpe_cond_tempo($sigla){
+	public function get_cond_tempo($sigla){
 		$list = array(
 			'ec'=>array('nome'=>'Encoberto com Chuvas Isoladas', 'descricao'=>'Céu totalmente encoberto com chuvas em algumas regiões, sem aberturas de sol.'),
 			'ci'=>array('nome'=>'Chuvas Isoladas', 'descricao'=>'Muitas nuvens com curtos períodos de sol e chuvas em algumas áreas.'),

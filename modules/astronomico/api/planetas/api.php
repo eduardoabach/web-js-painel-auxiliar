@@ -1,9 +1,11 @@
 <?php
+require_once strstr(__DIR__, '/modules/', true).'/modules/tools/core.php';
+sys_set_module(__DIR__);
+
 /*
-AstroTool é uma library PHP para cálculos envolvendo astros, em especial o sol e a lua. Suas posições e fases.
+É uma library PHP para cálculos envolvendo astros, em especial o sol e a lua. Suas posições e fases.
  
 Baseado no trabalho: Vladimir Agafonkin's JavaScript library.
-https://github.com/mourner/AstroTool
 
 Cálculos solares baseados em: http://aa.quae.nl/en/reken/zonpositie.html
 Cálculos lunares baseados em: http://aa.quae.nl/en/reken/hemelpositie.html
@@ -134,8 +136,7 @@ function moonCoords($d){ // Coordenadas eclípticas geocêntricas da lua
     );
 }
 
-
-class AstroTool {
+class Planetas {
     var $date;
     var $lat;
     var $lng;
@@ -155,10 +156,116 @@ class AstroTool {
         $this->times[] = [$angle, $riseName, $setName];
     }
 
-    function __construct($date, $lat, $lng) {
+    function __construct($date=null, $lat=null, $lng=null) {
         $this->date = $date;
+
+        if(!$lat || !$lng){
+            $posGeoDefault = sys_pos_geo();
+            $lat = $posGeoDefault['lat'];
+            $lng = $posGeoDefault['lng'];
+        }
+
         $this->lat  = $lat;
         $this->lng  = $lng;
+    }
+
+    function getInfo($date=null){
+        if($date)
+            $this->date = $date;
+
+        $info = $this->getInfoSol();
+        $info['lua'] = $this->getInfoLua($infoSol['luz_dia_naut']);
+        return $info;
+    }
+
+    /* Informar o tempo de luz do dia para cálculo opicional da visibilidade da lua */
+    function getInfoLua($tempoLuzDia=array()){
+        $momentos = array();
+        $dtDia = $this->date->format('Y-m-d');
+
+        $luaLuz = $this->getMoonIllumination();
+        if(is_array($luaLuz) && count($luaLuz) > 0){
+            $momentos['fase'] = $luaLuz['phase'];
+            $momentos['luz'] = $luaLuz['fraction'];
+            $momentos['angulo'] = $luaLuz['angle'];
+        }
+
+        $luaPresenca = $this->getMoonTimes();
+        if(is_array($luaPresenca) && count($luaPresenca) > 0){
+
+            // não existe saida quando o ciclo for completo
+            if(!isset($luaPresenca['lua_sair']))
+                $luaPresenca['lua_sair'] = new DateTime($dtDia.' 23:59:59');
+            
+            $segLuaPresent = segundos_entre_datas($luaPresenca['lua_sair']->format('Y-m-d H:i:s'), $luaPresenca['lua_nascer']->format('Y-m-d H:i:s'));
+            $momentos['presenca']['nascer'] = $luaPresenca['lua_nascer']->format('H:i:s');
+            $momentos['presenca']['sair'] = $luaPresenca['lua_sair']->format('H:i:s');
+            $momentos['presenca']['tempo'] = segundos_to_hora($segDiaAstr);
+            $momentos['presenca']['segundos'] = $segLuaPresent;
+
+            if(isset($tempoLuzDia['ini']) && isset($tempoLuzDia['fim'])){
+                // Para o visível vou ter que verificar quais dos eventos de exibicao acontece por ultimo, e qual dos de saida acontece primeiro
+                $luaAparece = $momentos['presenca']['nascer'];
+                $luaVisivel = $tempoLuzDia['fim'];
+                $luaPresencaAntesEstarVisivel = segundos_entre_horas($luaAparece, $luaVisivel); // valor negativo significa antes
+                $horaUltiEventVisivel = ($luaPresencaAntesEstarVisivel < 0) ? $luaVisivel : $luaAparece;
+                $luaDtVisIni = new DateTime($dtDia.' '.$horaUltiEventVisivel);
+
+                $luaSair = $momentos['presenca']['sair'];
+                $luaNaoVisivel = $tempoLuzDia['ini'];
+                $luaSairAntesNaoVisivel = segundos_entre_horas($luaSair, $luaNaoVisivel);
+                $horaPrimeiroEventInvisivel = ($luaSairAntesNaoVisivel > 0) ? $luaSair : $luaNaoVisivel;
+                $luaDtVisFim = new DateTime($dtDia.' '.$horaPrimeiroEventInvisivel);
+
+                $segLuaVisivel = segundos_entre_datas($luaDtVisFim->format('Y-m-d H:i:s'), $luaDtVisIni->format('Y-m-d H:i:s'));
+                $momentos['presen_visivel_noite']['visivel'] = $horaUltiEventVisivel;
+                $momentos['presen_visivel_noite']['fora'] = $horaPrimeiroEventInvisivel;
+                $momentos['presen_visivel_noite']['tempo'] = segundos_to_hora($segLuaVisivel);
+                $momentos['presen_visivel_noite']['segundos'] = $segLuaVisivel;
+            }
+        }
+
+        return $momentos;
+    }
+
+    function getInfoSol(){
+        $momentos = array();
+        $hSol = $this->getSunTimes();
+        if(is_array($hSol) && count($hSol) > 0){
+            $momentos['meio_dia_solar'] = $hSol['solMeioDia']->format('H:i:s');
+
+            $segDiaPleno = segundos_entre_datas($hSol['horaDourada']->format('Y-m-d H:i:s'), $hSol['horaDouradaFim']->format('Y-m-d H:i:s'));
+            $momentos['luz_dia_plena']['ini'] = $hSol['horaDouradaFim']->format('H:i:s');
+            $momentos['luz_dia_plena']['fim'] = $hSol['horaDourada']->format('H:i:s');
+            $momentos['luz_dia_plena']['tempo'] = segundos_to_hora($segDiaPleno);
+            $momentos['luz_dia_plena']['segundos'] = $segDiaPleno;
+
+            $segDiaCiv = segundos_entre_datas($hSol['crepusculo']->format('Y-m-d H:i:s'), $hSol['amanhecer']->format('Y-m-d H:i:s'));
+            $momentos['luz_dia_civ']['ini'] = $hSol['amanhecer']->format('H:i:s');
+            $momentos['luz_dia_civ']['fim'] = $hSol['crepusculo']->format('H:i:s');
+            $momentos['luz_dia_civ']['tempo'] = segundos_to_hora($segDiaCiv);
+            $momentos['luz_dia_civ']['segundos'] = $segDiaCiv;
+
+            $segDiaNaut = segundos_entre_datas($hSol['nauticoFim']->format('Y-m-d H:i:s'), $hSol['nauticoIni']->format('Y-m-d H:i:s'));
+            $momentos['luz_dia_naut']['ini'] = $hSol['nauticoIni']->format('H:i:s');
+            $momentos['luz_dia_naut']['fim'] = $hSol['nauticoFim']->format('H:i:s');
+            $momentos['luz_dia_naut']['tempo'] = segundos_to_hora($segDiaNaut);
+            $momentos['luz_dia_naut']['segundos'] = $segDiaNaut;
+
+            $segDiaAstr = segundos_entre_datas($hSol['noite']->format('Y-m-d H:i:s'), $hSol['noiteFim']->format('Y-m-d H:i:s'));
+            $momentos['luz_dia_astr']['ini'] = $hSol['noiteFim']->format('H:i:s');
+            $momentos['luz_dia_astr']['fim'] = $hSol['noite']->format('H:i:s');
+            $momentos['luz_dia_astr']['tempo'] = segundos_to_hora($segDiaAstr);
+            $momentos['luz_dia_astr']['segundos'] = $segDiaAstr;
+            
+            $momentos['nascer_sol']['ini'] = $hSol['nascerSol']->format('H:i:s');
+            $momentos['nascer_sol']['fim'] = $hSol['nascerSolFim']->format('H:i:s');
+
+            $momentos['por_sol']['ini'] = $hSol['porSolIni']->format('H:i:s');
+            $momentos['por_sol']['fim'] = $hSol['porSol']->format('H:i:s');
+        }
+
+        return $momentos;
     }
 
     // calcular a posição do sol por uma data e latitude/longitude

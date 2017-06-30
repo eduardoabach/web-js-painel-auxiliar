@@ -33,14 +33,6 @@ function get_nome_cidade($id){
 	return (isset($list[$id])) ? $list[$id] : false;
 }
 
-function get_inpe_img_clima_sigla($sigla){
-	return 'modules/clima/img/inpe/'.$sigla.'.png';
-}
-
-function get_img_fase_lua($fase){
-	return 'modules/clima/img/lua_fase/'.$fase.'.png';
-}
-
 // Escala de tons de pele por fitzpatrick.
 // Pigmentacao imediata = 6h~8h
 // Pigmentacao retardada = 10h~14h

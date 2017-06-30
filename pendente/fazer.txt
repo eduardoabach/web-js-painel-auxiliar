@@ -1,14 +1,4 @@
 
-
-//A seguir, uma tabela com os valores das variações da aceleração da gravidade terrestre com a altitude :
-altitude km; gravidade(m/s)
-0;9,81
-1000;7,33
-2000;5,68
-3000;4,53
-4000;3,7
-10000;1,49
-
 //olhar
 https://cidades.ibge.gov.br/v4/brasil/rs/sao-leopoldo/panorama
 
@@ -46,6 +36,15 @@ modo de telas configurável
 modo de menu configurável
 	padrão atual (para pc)
 	alguma opção para funcionar em mobile
+tela de status de conexão
+	funcionamentos
+		simbolos de status, ativos, inativos
+		verificar manual clicando ou ciclos de tempo default
+		para os testes talvez fazer requisicao ajax
+	o que verificar
+		internet geral, teste ao google e mais outro
+		banco de dados
+		próprio servidor, pois pode apenas o front vivo e o back fora
 btn modal atualizar conteudo, reload mesmo
 	possibilidade de reload periodico da janela, 10s, 30s, 10min...
 implementar fases da lua // http://star-www.st-and.ac.uk/~fv/webnotes/chapt13.htm | http://www.zenite.nu/lua-cheia/
