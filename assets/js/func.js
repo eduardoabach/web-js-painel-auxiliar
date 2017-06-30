@@ -23,8 +23,6 @@ function mk_panel(id){
 
 // objeto recebido deve ser $
 function set_modal_zindex_top(elModal){
-   console.log('num:'+get_modal_max_zindex());
-   console.log('next:'+(get_modal_max_zindex()+1));
    $(elModal).css('z-index', get_modal_max_zindex()+1);
 }
 
