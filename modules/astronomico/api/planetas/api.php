@@ -23,7 +23,7 @@ define('PI', M_PI);
 define('rad', PI / 180);
 
 // date/time constantes e conversões
-define('daySec', 60 * 60 * 24);
+define('daySec', 86400); //60 * 60 * 24
 define('J1970', 2440588);
 define('J2000', 2451545);
 // cálculos gerais para posição

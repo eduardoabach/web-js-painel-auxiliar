@@ -1,5 +1,5 @@
 define(
-	["jquery", "app", "clima/drawPlanetPhase", "func", "bootstrap"],
+	["jquery", "app", "astronomico/drawPlanetPhase", "func", "bootstrap"],
 	function ($, App) {
 		return {
 			Url: function(view){
