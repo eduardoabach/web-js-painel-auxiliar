@@ -21,7 +21,7 @@ clima
 	detalhes data base geral
 		estação do ano
 			mostrar sigla, no title e dias para próxima estação
-			giglas
+			siglas
 				inv
 				pri
 				ver

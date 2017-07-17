@@ -94,6 +94,12 @@ function number_to_br(valor, decimals) {
    }
 }
 
+function number_pad_zero(valor) {
+   var str = ""+valor; // converter em string
+   var pad = "00";
+   return pad.substring(0, pad.length - str.length) + str;
+}
+
 function number_format(number, decimals, dec_point, thousands_sep) {
    number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
    var n = !isFinite(+number) ? 0 : +number,

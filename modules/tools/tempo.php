@@ -258,13 +258,15 @@ function tempoEntreDatas($data1, $data2) {
 
 // get_dias_uteis_entre_datas(date_create('2017-01-01'), date_create('2017-02-01'));
 // get_dias_uteis_entre_datas(date_create(date('Y-m-01')), date_create(date('Y-m-t')));
-function get_dias_uteis_entre_datas(DateTime $dataInicial, DateTime $dataFinal){
+// parametros devem ser do tipo DateTime.
+function get_dias_uteis_entre_datas($dataInicial, $dataFinal){
+	$dtIni = clone $dataInicial; // manipula outra variavel porque ao add tempo abaixo influencia var original
 	$diasUteis = 0;
-	while ($dataInicial->format('Y-m-d') <= $dataFinal->format('Y-m-d')) {
-		if (!in_array($dataInicial->format('w'), array(0, 6))) {
+	while ($dtIni->format('Y-m-d') <= $dataFinal->format('Y-m-d')) {
+		if (!in_array($dtIni->format('w'), array(0, 6))) {
 			$diasUteis++;
 		}
-		$dataInicial->add(new DateInterval('P1D'));
+		$dtIni->add(new DateInterval('P1D'));
 	}
 
 	return $diasUteis;

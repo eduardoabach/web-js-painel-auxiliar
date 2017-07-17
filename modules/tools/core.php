@@ -1,6 +1,7 @@
 <?php
 
 /* LOAD BÁSICO DE FUNCIONALIDADES  */
+mb_internal_encoding("UTF-8");
 define('ROOT', dirname(__DIR__));
 sys_load_tool('utilidades');
 sys_load_tool('tempo');

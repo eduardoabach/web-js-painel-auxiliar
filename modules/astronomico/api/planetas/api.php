@@ -174,7 +174,7 @@ class Planetas {
             $this->date = $date;
 
         $info = $this->getInfoSol();
-        $info['lua'] = $this->getInfoLua($infoSol['luz_dia_naut']);
+        $info['lua'] = $this->getInfoLua($info['luz_dia_naut']);
         return $info;
     }
 
@@ -196,6 +196,8 @@ class Planetas {
             // não existe saida quando o ciclo for completo
             if(!isset($luaPresenca['lua_sair']))
                 $luaPresenca['lua_sair'] = new DateTime($dtDia.' 23:59:59');
+            if(!isset($luaPresenca['lua_nascer']))
+                $luaPresenca['lua_nascer'] = new DateTime($dtDia.' 23:59:59');
             
             $segLuaPresent = segundos_entre_datas($luaPresenca['lua_sair']->format('Y-m-d H:i:s'), $luaPresenca['lua_nascer']->format('Y-m-d H:i:s'));
             $momentos['presenca']['nascer'] = $luaPresenca['lua_nascer']->format('H:i:s');
