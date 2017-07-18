@@ -10,12 +10,20 @@ function RelogioTool(){
 		this.CicloTempoUp();
 	}
 
-	this.CicloTempoUp = function(){
+	this.CicloTempoUp = function(tempFim){
 		var self = this;
-		setTimeout( function request(){
-			self.TempoUp();
-			self.CicloTempoUp(); // chama ele novamente para refazer processo, criando loop
-		}, 1000); //milisegundos
+		var dtAtual = new Date();
+		var tempIni = dtAtual.getTime();
+
+		var tempoCiclo = 1000;
+		if(tempFim != undefined){
+			tempoCiclo -= tempIni-tempFim;
+		}
+
+		self.TempoUp();
+		setTimeout( function request(){	
+			self.CicloTempoUp(tempIni+tempoCiclo); // chama ele novamente para refazer processo, criando loop
+		}, tempoCiclo); //milisegundos
 	}
 	
 	this.TempoUp = function(){
@@ -35,5 +43,4 @@ function RelogioTool(){
 			this.hora = 0;
 		}
 	}
-
 }
