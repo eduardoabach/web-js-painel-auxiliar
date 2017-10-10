@@ -26,8 +26,9 @@
 	</td>
 	<td align="center">
 		<strong title="RISCO <?=$iuv_info['risco']?>" style="color:<?=$iuv_info['cor']?>"><?=(int)$iuv?></strong>
+		<?=round($lua['fase']*2,4)?>
 	</td>
 	<td align="center">
-		<div class="lua-fase" data-fase="<?=round($lua['fase']*2,4)?>" data-size="30" title="<?=$lua['descricao']?>"></div>
+		<div class="lua-fase" data-fase="0.9" data-size="30" title="<?=$lua['descricao']?>"></div>
 	</td>
 </tr>

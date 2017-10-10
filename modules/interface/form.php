@@ -1,3 +1,9 @@
+<?php
+require_once dirname(__DIR__).'/tools/core.php';
+sys_set_module(__DIR__);
+sys_load_md('function');
+
+?>
 <div id="wrapper">
 	<?php include("menu.php"); ?>
 	<div id="page-wrapper">

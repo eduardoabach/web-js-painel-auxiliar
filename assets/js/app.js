@@ -42,7 +42,8 @@ define(
 					// config details panel
 					objPanelJq.find('#item-titulo').html(title);
 					objPanelJq.find('#btn-item-fechar').click(function(){
-						objDiv.parentNode.removeChild(objDiv);
+						//objDiv.parentNode.removeChild(objDiv);
+						objDiv.remove();
 					});
 
 					// antes de post cria carregando

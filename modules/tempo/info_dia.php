@@ -2,7 +2,7 @@
 require_once dirname(__DIR__).'/tools/core.php';
 sys_set_module(__DIR__);
 
-$dataDia = (isset($_POST['data_dia'])) ? $_POST['data_dia'] : false;
+$dataDia = (isset($_POST['data_dia'])) ? $_POST['data_dia'] : date('Y-m-d');
 if($dataDia === false || !is_date_db($dataDia)){
 	echo 'Data inválida.';
 	return false;
@@ -35,7 +35,7 @@ $dataMesFim = data_ultimo_dia_mes($dataDia, true); // retorna a data do ultimo d
 $dTMesIni = new DateTime($dataMesIni);
 $dTMesFim = new DateTime($dataMesFim);
 
-$diasMes = dias_entre_datas($dataMesIni, $dataMesFim);
+$diasMes = dias_entre_datas($dataMesIni, $dataMesFim)+1;
 $diasMesPassados = dias_entre_datas($dataMesIni, $dataDia)+1; // soma dia atual
 $diasMesPerc = $diasMesPassados/$diasMes*100;
 
@@ -82,8 +82,8 @@ $infoPlanet = $planetasServ->getInfo($dataTime); // ASTRONOMICO, Lua / Sol
 </div>
 
 <div class="row">
-	<div class="col-lg-2 text-right">Mês</div>
-	<div class="col-lg-5 text-center">
+	<div class="col-lg-3 text-right">Mês</div>
+	<div class="col-lg-4 text-center">
 		<?=$diasMesPassados.'('.round($diasMesPerc).'%) / '.$diasMes?>
     </div>
 	<div class="col-lg-5 text-center">
@@ -91,11 +91,11 @@ $infoPlanet = $planetasServ->getInfo($dataTime); // ASTRONOMICO, Lua / Sol
     </div>
 </div>
 <div class="row">
-	<div class="col-lg-4 text-rigth">Ano</div>
+	<div class="col-lg-3 text-right">Ano</div>
 	<div class="col-lg-4 text-center">
 		<?=$diasAnoPassado.'('.round($diasAnoPerc).'%) / '.$diasAno?>
     </div>
-	<div class="col-lg-4 text-center">
+	<div class="col-lg-5 text-center">
 		<?=$diasAnoPassadoUteis.'('.round($diasAnoUteisPerc).'%) / '.$diasAnoUteis?>
     </div>
 </div>

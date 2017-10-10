@@ -1,65 +1,59 @@
 <?php
 	$menuList = array(
 		// 'login' => 'Login',
-		'prog' => array(
+		't_prog' => array(
 			'desc'=>'Prog. Info',
 			'menu'=> array(
 				'bootstrap_help' => 'Bootstrap',
 				'cores' => 'Cores'
 			)
 		),
-		'infos' => array(
+		't_infos' => array(
 			'desc'=>'Informação',
 			'menu'=> array(
 				'search' => 'Busca',
 				'finance' => 'Financeiro',
 				'links' => 'Links',
-				'history' => 'História'
+				'history' => 'História',
+				'painel_dia' => array('desc'=>'Painel Dia', 'app'=>'tempo', 'func'=>'InfoDia'),
+				'tempo' => 'Relógio',
+					/*abrir painel com outros paises: 
+					londres. inglaterra
+					berlin, alemanha
+					moscou, russia
+					washington, eua
+					pequim, china
+					toquio, japao
+
+					*/
+				't_clima' => array(
+					'desc'=>'Clima',
+					'menu'=> array(
+						'astronomico' => 'Lista'
+					)
+				)
 			)
 		),
-		'ferramentas' => array(
+		't_ferramentas' => array(
 			'desc'=>'Ferramentas',
 			'menu'=> array(
 				'gerador_docs' => 'CPF CNPJ',
 				'cript' => 'Criptografia',
 				'calc' => 'Calculadora',
-				'astronomico' => 'Clima',
 				'webcam' => 'Webcam',
-				'player' => 'Player',
+				'player' => 'Player'
 			)
 		)
 	);
+
+	$menuNovo = menuConstruir($menuList);
 ?>
 
 <nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
 	<a class="navbar-brand" href="index.html">Painel Multifunção</a>
 	<nav id="menu-nav">
 		<ul>
-			<?php
-				foreach($menuList as $keyChamada => $descricao){
-					if(is_array($descricao)){
-						// add class="current-menu-item" no li para marcar ele
-			?>
-				<li> 
-					<a href="javascript:;"><?=$descricao['desc']?></a>
-					<ul>
-						<?php foreach($descricao['menu'] as $subKeyChamada => $subDescricao){ ?>
-						<li>
-							<a href="javascript:;" class="get-module" data-option="<?=$subKeyChamada?>"><?=$subDescricao?></a>
-						</li>
-						<?php } ?>
-					</ul>
-				</li>
-			<?php
-					} else {
-			?>
-				<li>
-					<a href="javascript:;" class="get-module" data-option="<?=$keyChamada?>"><?=$descricao?></a>
-				</li>
-			<?php 
-					} 
-				}
-			?>
+			<?=$menuNovo?>
 		</ul>
 	</nav>
 </nav>

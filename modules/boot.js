@@ -23,6 +23,7 @@
 
 	require(['jquery', 'interface/app'], function($, Interface){
 		var el_local = $('#painel-content');
-		Interface.Init(el_local);
+		var InterfaceAtual = new Interface();
+		InterfaceAtual.Init(el_local);
 	});
 })();

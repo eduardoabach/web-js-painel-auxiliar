@@ -35,6 +35,8 @@ class Inpe{
 	}
 
 	public function get_clima_img($sigla){
+		if($sigla == '') 
+			$sigla = 'nd';
 		return sys_url_md_api($this->nome_api,'img_clima/'.$sigla.'.png');
 	}
 
