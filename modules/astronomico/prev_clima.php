@@ -34,7 +34,7 @@ if(isset($previsaoTempo['dias'])){
 
 <div class="row">
 	<div class="col-lg-12">
-	    <strong><?=$nomeCidade?></strong>
+	    <strong><?=$nomeCidade?> aaaa</strong>
 	    <small><?=(isset($previsaoTempo['atualizacao'])) ? '(Atualização: '.date_to_user($xmlOb->atualizacao).')' : ''?></small>
     </div>
 </div>

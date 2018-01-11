@@ -39,16 +39,23 @@ define(
 						callback: function(div){
 
 							div.find('.lua-fase').each(function(){
-								var fase = $(this).data('fase'); // 0.1 ~ 1
+								var fase = Number($(this).data('fase')); // 0.1 ~ 2.0
+								var sombraEsquerda = false;
+								if(fase > 1){
+									fase = fase - 1;
+									sombraEsquerda = true;
+								}
+
 								var tamanho = $(this).data('size'); // 10, 30, 50. Em px
-								drawPlanetPhase(this, fase, false, {diameter: tamanho, blur:0});
+								drawPlanetPhase(this, fase, sombraEsquerda, {diameter: tamanho, blur:0});
 							});
 
 							div.find('.info-dia').on('click',function(){
 								var dataDia = $(this).data('dia');
 								if(dataDia != undefined && dataDia != ''){
 									require([('tempo/app')], function(mod_name){
-										mod_name.InfoDia(dataDia);
+										var ObjAtual = new mod_name();
+										ObjAtual.InfoDia(dataDia);
 									});	
 								}
 							});

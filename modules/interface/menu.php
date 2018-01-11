@@ -15,7 +15,7 @@
 				'finance' => 'Financeiro',
 				'links' => 'Links',
 				'history' => 'História',
-				'painel_dia' => array('desc'=>'Painel Dia', 'app'=>'tempo', 'func'=>'InfoDia'),
+				'painel_dia' => array('desc'=>'Painel Dia', 'app'=>'tempo', 'func'=>'InfoDiaAtual'),
 				'tempo' => 'Relógio',
 					/*abrir painel com outros paises: 
 					londres. inglaterra

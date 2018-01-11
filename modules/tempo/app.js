@@ -25,17 +25,26 @@ define(
 					});
 				},
 
-				InfoDia: function(data_dia){
+				InfoDia: function(data_dia, exibir_relogio){
 					var self = this;
+					if(exibir_relogio == undefined)
+						exibir_relogio = false;
+
 					App.Modal({
 						title: 'Informações do dia',
 						url: self.Url('info_dia'),
 						size_class: 'col-lg-4',
-						data: {data_dia : data_dia},
+						data: {data_dia : data_dia, exibir_relogio: exibir_relogio},
 						callback: function(div){
-							self.InitRelogio(div);
+							if(exibir_relogio)
+								self.InitRelogio(div);
 						}
 					});
+				},
+
+				InfoDiaAtual: function(){
+					var self = this;
+					self.InfoDia('', true); // data ele pega por padrão depois o dia atual
 				},
 			
 				InitRelogio: function(content){

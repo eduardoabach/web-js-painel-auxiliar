@@ -2,7 +2,8 @@
 require_once dirname(__DIR__).'/tools/core.php';
 sys_set_module(__DIR__);
 
-$dataDia = (isset($_POST['data_dia'])) ? $_POST['data_dia'] : date('Y-m-d');
+$dataDia = (isset($_POST['data_dia']) && $_POST['data_dia'] != false && $_POST['data_dia'] != '') ? $_POST['data_dia'] : date('Y-m-d');
+$exibirRelogio = (isset($_POST['exibir_relogio']) && $_POST['exibir_relogio'] == 'true');
 if($dataDia === false || !is_date_db($dataDia)){
 	echo 'Data inválida.';
 	return false;
@@ -76,7 +77,9 @@ $infoPlanet = $planetasServ->getInfo($dataTime); // ASTRONOMICO, Lua / Sol
 			    <?=$dataArr['dia']?><br>
 			    <?=$nomeMes?>
 		    </button>
-	    	<span id="tm-h"><?=date('H')?></span>:<span id="tm-m"><?=date('i')?></span>:<span id="tm-s"><?=date('s')?></span>
+	    	<?php if($exibirRelogio){ ?>
+	    		<span id="tm-h"><?=date('H')?></span>:<span id="tm-m"><?=date('i')?></span>:<span id="tm-s"><?=date('s')?></span>
+    		<?php } ?>
     	</h1>
     </div>
 </div>
