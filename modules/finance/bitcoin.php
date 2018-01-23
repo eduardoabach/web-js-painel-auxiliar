@@ -15,10 +15,10 @@ $mercadoLitecoin = json_decode(download_page('https://www.mercadobitcoin.net/api
 	    <table class="table table-hover table-condensed">
 	    	<thead>
 	    		<tr>
-	    			<td>Moeda</td>
-	    			<td>Compra</td>
-	    			<td>Venda</td>
-	    			<td>Flutuação</td>
+	    			<th>Moeda</th>
+	    			<th>Compra</th>
+	    			<th>Venda</th>
+	    			<th>Flutuação</th>
 	    		</tr>
 	    	</thead>
 	    	<tbody>

@@ -1,0 +1,48 @@
+'206' => 'Cesta básica',
+'7348' => 'Cesta básica - São Paulo (diária)',
+'7489' => 'Cesta básica - Porto Alegre',
+
+'1619' => 'Salário mí­nimo',
+
+'7846' => 'Dow Jones NYSE - í­ndice mensal',
+'7809' => 'Dow Jones NYSE - í­ndice',
+'7847' => 'Nasdaq - í­ndice mensal',
+'7810' => 'Nasdaq - í­ndice',
+'7832' => 'Ibovespa - Variação percentual mensal',
+'7845' => 'Bovespa - í­ndice mensal',
+'13521' => 'Meta para a inflação',
+
+'433' => 'Índice nacional de preços (IPCA)',
+'432' => 'Taxa de juros - Meta Selic',
+'4189' => 'Selic acumulada no mês anualizada',
+'4391' => 'Taxa de juros - CDI acumulada no mês',
+'4393' => 'Índice de Confiança do Consumidor',
+'4394' => 'Índice de Condições Econômicas Atuais',
+'4395' => 'Índice de Expectativas Futuras',
+
+'7733' => 'Índice de preços ao consumidor (2005=100) - Venezuela'
+
+
+
+432 => Taxa de juros - Meta Selic definida pelo Copom
+4189 => Taxa de juros - Selic acumulada no mês anualizada
+4390 => Taxa de juros - Selic acumulada no mês
+
+433 => Índice nacional de preços ao consumidor-amplo (IPCA)
+4391 => Taxa de juros - CDI acumulada no mês
+4393 => Índice de Confiança do Consumidor
+4394 => Índice de Condições Econômicas Atuais
+4395 => Índice de Expectativas Futuras
+7348 => Cesta básica - São Paulo (diária)
+7489 => Cesta básica - Porto Alegre
+7733 => Índice de preços ao consumidor (2005=100) - Venezuela
+
+7846 => Dow Jones NYSE - í­ndice mensal
+7809 => Dow Jones NYSE - í­ndice
+7847 => Nasdaq - í­ndice mensal
+7810 => Nasdaq - í­ndice
+7832 => Ibovespa - Variação percentual mensal
+7845 => Bovespa - í­ndice mensal
+13521 => Meta para a inflação
+
+// 21774 População
