@@ -15,5 +15,6 @@
 	<div class="col-lg-12">
 	    <img id="foto_tirada" style="margin: 0 auto; display: block;"/>
         <canvas id="foto_preview" style="display:none" ></canvas>
+        <button id="img-download" class="btn btn-success pull-right">Download</button>
 	</div>
 </div>
