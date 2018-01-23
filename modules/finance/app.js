@@ -11,7 +11,7 @@ define(
 					App.Modal({
 						title: 'Indicadores Financeiros',
 						url: self.Url('form'),
-						size_class: 'col-lg-4',
+						size_class: 'col-lg-3',
 						callback: function(div){
 							self.Render(div);
 						}
@@ -31,10 +31,14 @@ define(
 					if(titulo == undefined)
 						titulo = 'Painel Financeiro';
 
+					var tamanho = 'col-lg-5';
+					if(comand == 'moedas')
+						tamanho = 'col-lg-4';
+
 					App.Modal({
 						title: titulo,
 						url: self.Url(comand),
-						size_class: 'col-lg-6',
+						size_class: tamanho,
 						callback: function(div){
 						}
 					});
