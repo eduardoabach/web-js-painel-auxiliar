@@ -49,12 +49,12 @@ define(
 
 							elP.onloadedmetadata = function() {
 								barTime.attr('max', elP.duration.toFixed(2));
-								labelTimeTotal.html(elP.duration.toFixed(2));
+								labelTimeTotal.html(seconds_to_time(elP.duration));
 							}; 
 
 							elP.ontimeupdate = function() {
 							    barTime.val(elP.currentTime);
-							    labelTimeAtual.html(elP.currentTime.toFixed(2));
+							    labelTimeAtual.html(seconds_to_time(elP.currentTime));
 							};
 
 							barTime.on('change', function(){

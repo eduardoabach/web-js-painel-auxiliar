@@ -122,3 +122,10 @@ function number_format(number, decimals, dec_point, thousands_sep) {
    }
    return s.join(dec);
 }
+
+function seconds_to_time(s){
+   hora = number_pad_zero(Math.round(s/3600));
+   minuto = number_pad_zero(Math.round((s%3600)/60));
+   segundo = number_pad_zero(Math.round((s%3600)%60));
+   return hora+":"+minuto+":"+segundo;
+}

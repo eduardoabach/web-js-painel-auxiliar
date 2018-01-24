@@ -11,7 +11,6 @@ cliar modal msg para desc em title
 		ao clicar js pega title do elemento e abre em mensagem para user
 clima
 	etapas para ampliar detalhes
-		uv
 		adicionar outros 7 dias, totalizando 14
 		movimento do sol
 		fazes da lua / movimento da lua
@@ -183,15 +182,6 @@ player compacto
 		pausar todos
 			opt gradual
 		fechar todos
-	funcionamento unitario
-		alterar volume
-			opt gradual
-		pausar
-			opt gradual
-	exemplo de uso
-		rpg, montando composicao de acontecimentos
-		som ambiente tranquilo composto: chuva, fogueira, vento, raios.
-		dj
 cadastro de crises
 	posterio uso em painel gerencial
 	dara início

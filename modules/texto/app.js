@@ -4,12 +4,12 @@ define(
 		return function() {
 			return {
 				Url: function(view){
-					return url_view('cript',view);
+					return url_view('texto',view);
 				},
 				Init: function(){
 					var self = this;
 					App.Modal({
-						title: 'Criptografia',
+						title: 'Texto',
 						url: self.Url('form'),
 						size_class: 'col-lg-4',
 						callback: function(div){

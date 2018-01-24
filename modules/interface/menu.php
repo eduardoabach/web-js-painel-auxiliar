@@ -38,7 +38,7 @@
 			'desc'=>'Ferramentas',
 			'menu'=> array(
 				'gerador_docs' => 'CPF CNPJ',
-				'cript' => 'Criptografia',
+				'texto' => 'Texto',
 				'calc' => 'Calculadora',
 				'webcam' => 'Webcam',
 				'player' => 'Player'
