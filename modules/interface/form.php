@@ -1,6 +1,4 @@
 <?php
-echo realpath(dirname(__DIR__).'/tools/core.php');
-die('a');
 require_once realpath(dirname(__DIR__).'/tools/core.php');
 sys_set_module('interface');
 sys_load_md('function');
