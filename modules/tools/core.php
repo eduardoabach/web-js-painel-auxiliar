@@ -35,11 +35,14 @@ function sys_load($url, $naoVerificar = false, $vars=array()){
 	if($vars && is_array($vars))
 		extract($vars);
 
-	return ($naoVerificar) ? include(ROOT.'/'.$url) : @include_once(ROOT.'/'.$url);
+	//echo ROOT.'/'.$url.'<br><br>';
+	//echo realpath(ROOT.'/'.$url).'<br><br><br>';
+	//die('r');
+	return ($naoVerificar) ? include(realpath(ROOT.'/'.$url)) : @include_once(realpath(ROOT.'/'.$url));
 }
 
 function sys_load_tool($tool){
-	return sys_load('/tools/'.$tool.'.php');
+	return sys_load('tools/'.$tool.'.php');
 }
 
 function sys_load_api($modulo, $api){
