@@ -1,6 +1,6 @@
 define(
-	["jquery", "app", "astronomico/drawPlanetPhase", "func", "bootstrap"],
-	function ($, App) {
+	["modules/astronomico/drawPlanetPhase"],
+	function () {
 		return function() {
 			return {
 				Url: function(view){

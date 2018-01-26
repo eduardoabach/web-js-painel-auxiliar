@@ -1,6 +1,6 @@
 define(
-	["jquery", "func", "func_number", "bootstrap"],
-	function ($) {
+	["assets/js/func_number"],
+	function () {
 		return function() {
 			return {
 				Url: function(view){
@@ -23,7 +23,7 @@ define(
 						if(func_name == undefined)
 							func_name = 'Init';
 
-						require([(mod_name+'/app')], function(mod_name){
+						require([('modules/'+mod_name+'/app')], function(mod_name){
 							var ObjAtual = new mod_name();
 							ObjAtual[func_name]();
 						});

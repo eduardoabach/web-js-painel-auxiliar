@@ -1,6 +1,6 @@
 define(
-	["jquery", "app", "func", "bootstrap"],
-	function ($, App) {
+	[],
+	function () {
 		return function() {
 			return {
 				Url: function(view){

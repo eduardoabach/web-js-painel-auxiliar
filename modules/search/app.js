@@ -1,6 +1,6 @@
 define(
-	["jquery", "app", "func", "func_search", "bootstrap"],
-	function ($, App) {
+	["assets/js/func_search"],
+	function () {
 		return function() {
 			return {
 				Url: function(view){

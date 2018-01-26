@@ -1,6 +1,6 @@
 define(
-	["jquery", "app", "tempo/relogio_tool", "func", "func_number", "bootstrap"],
-	function ($, App) {
+	["modules/tempo/relogio_tool", "assets/js/func_number"],
+	function () {
 		return function(){
 			return {			
 				relogioTimeDom: null,

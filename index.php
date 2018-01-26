@@ -1,3 +1,7 @@
+<?php
+	@require_once 'modules/tools/core.php';
+?>
+
 <html xml:lang="pt-br" lang="pt-br">
 	<head>
 		<title>Painel</title>
@@ -18,6 +22,20 @@
 	</head>
 	<body>
 		<div id="painel-content"></div>
-		<script src="assets/js/require.js" data-main="modules/boot"></script>
+		<script type="text/javascript">
+			window._System = {
+				user: {
+					id: <?php echo '1'//$userid;?>,
+					login: '<?php echo 'Ed'//$username;?>'
+				},
+				nocache: '<?php echo COD_CACHE; ?>',
+		      	url: '<?php echo BASE_URL; ?>'
+		   }
+		</script>
+		<script src="assets/js/jquery-2.2.4.min.js"></script>
+		<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+		<script src="assets/js/func.js"></script>
+		<script src="assets/js/app.js"></script>
+		<script src="assets/js/require.js" data-main="boot"></script>
 	</body>
 </html>
