@@ -1,5 +1,5 @@
 define(
-	["assets/js/func_cript"],
+	["assets/js/func_cript", "assets/js/func_string"],
 	function () {
 		return function() {
 			return {
@@ -22,19 +22,31 @@ define(
 					var elString = el_content.find('#cript-text');
 
 					el_content.find('#cript-act-e').click(function(){
-						self.EventE(elString);
+						elString.val(base_64_encode(elString.val()));
 					});
+
 					el_content.find('#cript-act-d').click(function(){
-						self.EventD(elString);
+						elString.val(base_64_decode(elString.val()));
 					});
-				},
-				EventE: function(el_text){
-					var result = base_64_encode(el_text.val());
-					el_text.val(result);
-				},
-				EventD: function(el_text){
-					var result = base_64_decode(el_text.val()); 
-					el_text.val(result);
+
+					el_content.find('#string-reverse').click(function(){
+						elString.val(string_reverse(elString.val()));
+					});
+
+					el_content.find('#string-random').click(function(){
+						elString.val(get_random_caracteres(20));
+					});
+
+					el_content.find('#string-lower').click(function(){
+						var str = elString.val();
+						elString.val(str.toLowerCase());
+					});
+
+					el_content.find('#string-upper').click(function(){
+						var str = elString.val();
+						elString.val(str.toUpperCase());
+					});
+
 				}
 			}
 		}
