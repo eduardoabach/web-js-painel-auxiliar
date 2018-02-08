@@ -9,6 +9,11 @@ define(
 				elMin: null,
 				elSeg: null,
 
+				OnClose: function(){
+					this.PauseRelogio();
+					delete this.relogioElApi;					
+				},
+
 				Url: function(view){
 					return url_view('tempo',view);
 				},
@@ -21,6 +26,9 @@ define(
 						size_class: 'col-lg-4',
 						callback: function(div){
 							self.InitRelogio(div);
+						},
+						onClose: function(){
+							self.OnClose();
 						}
 					});
 				},
@@ -38,6 +46,9 @@ define(
 						callback: function(div){
 							if(exibir_relogio)
 								self.InitRelogio(div);
+						},
+						onClose: function(){
+							self.OnClose();
 						}
 					});
 				},
@@ -70,8 +81,8 @@ define(
 				},
 				
 				PauseRelogio: function(){
-					clearTimeout(relogioTimeDom);
-					relogioElApi.Pause();
+					clearTimeout(this.relogioTimeDom);
+					this.relogioElApi.Pause();
 				}
 
 			}

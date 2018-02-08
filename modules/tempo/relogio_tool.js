@@ -25,7 +25,7 @@ function RelogioTool(){
 			}
 
 			self.TempoUp();
-			this.tempoRelogio = setTimeout( function request(){	
+			this.tempoRelogio = setTimeout( function request(){
 				self.CicloTempoUp(tempIni+tempoCiclo); // chama ele novamente para refazer processo, criando loop
 			}, tempoCiclo); //milisegundos
 		}
@@ -47,6 +47,11 @@ function RelogioTool(){
 		if(this.hora >= 24){
 			this.hora = 0;
 		}
+	}
+
+	this.Play = function(){
+		this.status = true;
+		this.CicloTempoUp();
 	}
 
 	this.Pause = function(){

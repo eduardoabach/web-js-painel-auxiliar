@@ -39,6 +39,7 @@
 			'menu'=> array(
 				'gerador_docs' => 'CPF CNPJ',
 				'texto' => 'Texto',
+				'conv_unidades' => 'Conv. Unid. Medid.',
 				'calc' => 'Calculadora',
 				'webcam' => 'Webcam',
 				'player' => 'Player'
